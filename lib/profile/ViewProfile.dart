@@ -241,14 +241,12 @@ class _ViewProfileState extends State<ViewProfile> {
                             context,
                             MaterialPageRoute(
                                 builder: (_) => editProfile(
-                                      user: users(
-                                        username: username1,
-                                        ID: ID1,
-                                        phoneNo: phoneNo1,
-                                        email: email1,
-                                      )
-                                      
-                                    )));
+                                        user: users(
+                                      username: username1,
+                                      ID: ID1,
+                                      phoneNo: phoneNo1,
+                                      email: email1,
+                                    ))));
                       },
                       child: Container(
                           height: 40,
@@ -288,7 +286,7 @@ class _ViewProfileState extends State<ViewProfile> {
                                         color: Colors.white, fontSize: 18),
                                   ),
                                   content: Text(
-                                      'Are you sure you want to delete this password ? ',
+                                      'Are you sure you want to delete your profile ? ',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 16)),
                                   actions: [
