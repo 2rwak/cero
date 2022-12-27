@@ -466,18 +466,18 @@ class _signUpState extends State<signUp> {
                   SizedBox(
                     height: 22,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 60,
-                        child: Image(
-                          image: AssetImage('assets/face.png'),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Container(
+                  //       height: 50,
+                  //       width: 60,
+                  //       child: Image(
+                  //         image: AssetImage('assets/face.png'),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   SizedBox(
                     height: 18,
                   ),
@@ -490,40 +490,40 @@ class _signUpState extends State<signUp> {
                         color: Color(0xFF4E5053),
                       ),
                       child: Center(
-                        // child: GestureDetector(
-                        //   onTap: () async {
-                        //     bool isAuthenticated =
-                        //         await LocalAuth.authenticate();
-                        //     if (isAuthenticated &&
-                        //         !username.isEmpty &&
-                        //         !email.isEmpty &&
-                        //         phoneNo != 0 &&
-                        //         nationalID != 0) {
-                        //       Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) =>
-                        //                 const navigationBar()),
-                        //       );
-                        //     } else {
-                        //       ScaffoldMessenger.of(context).showSnackBar(
-                        //         const SnackBar(
-                        //           content: Text('Authentication failed.'),
-                        //         ),
-                        //       );
-                        //     }
-                        //   },
-                        child: Text(
-                          'Set Up Face Id',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: 'Inter',
+                          // child: GestureDetector(
+                          //   onTap: () async {
+                          //     bool isAuthenticated =
+                          //         await LocalAuth.authenticate();
+                          //     if (isAuthenticated &&
+                          //         !username.isEmpty &&
+                          //         !email.isEmpty &&
+                          //         phoneNo != 0 &&
+                          //         nationalID != 0) {
+                          //       Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: (context) =>
+                          //                 const navigationBar()),
+                          //       );
+                          //     } else {
+                          //       ScaffoldMessenger.of(context).showSnackBar(
+                          //         const SnackBar(
+                          //           content: Text('Authentication failed.'),
+                          //         ),
+                          //       );
+                          //     }
+                          //   },
+                          // child: Text(
+                          //   'Set Up Face Id',
+                          //   textAlign: TextAlign.center,
+                          //   style: TextStyle(
+                          //     color: Colors.white,
+                          //     fontSize: 14,
+                          //     fontFamily: 'Inter',
+                          //   ),
+                          // ),
+                          // ),
                           ),
-                        ),
-                        // ),
-                      ),
                     ),
                   ),
                   SizedBox(
@@ -582,28 +582,19 @@ class _signUpState extends State<signUp> {
                                 ),
                               );
                             } else if (isUserValid) {
-                              print("inside is valid 2");
-                              await inserting();
-                              print("inside is valid 3");
+                              if (isValid == true) {
+                                await inserting();
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => navigationBar(
-                                            Currentusername:
-                                                userNameController.text,
-                                          )));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => navigationBar(
+                                              Currentusername:
+                                                  userNameController.text,
+                                            )));
+                              }
                             }
 
-                            // await inserting();
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (_) => navigationBar()));
-                            // else {
-                            //   print("here");
-                            // }
-                            // }
                             print("outside is valid 2");
 
                             ;
