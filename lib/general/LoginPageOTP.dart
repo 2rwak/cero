@@ -126,7 +126,7 @@ class _LoginPageOTPState extends State<LoginPageOTP> {
               context,
               MaterialPageRoute(
                   builder: (_) => navigationBar(
-                        Currentusername: usernameController.text,
+                        Currentusername: usernameController.text, 
                       )));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

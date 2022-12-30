@@ -160,7 +160,7 @@ class _signUpState extends State<signUp> {
           SizedBox(height: 6),
           Container(
             width: 450,
-            height: 630,
+            height: 550,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               color: Color(0xff1b1b1e),
@@ -481,54 +481,52 @@ class _signUpState extends State<signUp> {
                   SizedBox(
                     height: 18,
                   ),
-                  Center(
-                    child: Container(
-                      height: 27,
-                      width: 219,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        color: Color(0xFF4E5053),
-                      ),
-                      child: Center(
-                          // child: GestureDetector(
-                          //   onTap: () async {
-                          //     bool isAuthenticated =
-                          //         await LocalAuth.authenticate();
-                          //     if (isAuthenticated &&
-                          //         !username.isEmpty &&
-                          //         !email.isEmpty &&
-                          //         phoneNo != 0 &&
-                          //         nationalID != 0) {
-                          //       Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) =>
-                          //                 const navigationBar()),
-                          //       );
-                          //     } else {
-                          //       ScaffoldMessenger.of(context).showSnackBar(
-                          //         const SnackBar(
-                          //           content: Text('Authentication failed.'),
-                          //         ),
-                          //       );
-                          //     }
-                          //   },
-                          // child: Text(
-                          //   'Set Up Face Id',
-                          //   textAlign: TextAlign.center,
-                          //   style: TextStyle(
-                          //     color: Colors.white,
-                          //     fontSize: 14,
-                          //     fontFamily: 'Inter',
-                          //   ),
-                          // ),
-                          // ),
-                          ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
+                  // Center(
+                  //   child: Container(
+                  //     height: 27,
+                  //     width: 219,
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(7),
+                  //       color: Color(0xFF4E5053),
+                  //     ),
+                  //     child: Center(
+                  //         // child: GestureDetector(
+                  //         //   onTap: () async {
+                  //         //     bool isAuthenticated =
+                  //         //         await LocalAuth.authenticate();
+                  //         //     if (isAuthenticated &&
+                  //         //         !username.isEmpty &&
+                  //         //         !email.isEmpty &&
+                  //         //         phoneNo != 0 &&
+                  //         //         nationalID != 0) {
+                  //         //       Navigator.push(
+                  //         //         context,
+                  //         //         MaterialPageRoute(
+                  //         //             builder: (context) =>
+                  //         //                 const navigationBar()),
+                  //         //       );
+                  //         //     } else {
+                  //         //       ScaffoldMessenger.of(context).showSnackBar(
+                  //         //         const SnackBar(
+                  //         //           content: Text('Authentication failed.'),
+                  //         //         ),
+                  //         //       );
+                  //         //     }
+                  //         //   },
+                  //         // child: Text(
+                  //         //   'Set Up Face Id',
+                  //         //   textAlign: TextAlign.center,
+                  //         //   style: TextStyle(
+                  //         //     color: Colors.white,
+                  //         //     fontSize: 14,
+                  //         //     fontFamily: 'Inter',
+                  //         //   ),
+                  //         // ),
+                  //         // ),
+                  //         ),
+                  //   ),
+                  // ),
+
                   Center(
                       child: InkWell(
                     // onTap: () {
@@ -582,7 +580,8 @@ class _signUpState extends State<signUp> {
                                 ),
                               );
                             } else if (isUserValid) {
-                              if (isValid == true) {
+                              // if (isValid == true)
+                              {
                                 await inserting();
 
                                 Navigator.push(
@@ -591,7 +590,7 @@ class _signUpState extends State<signUp> {
                                         builder: (_) => navigationBar(
                                               Currentusername:
                                                   userNameController.text,
-                                            )));
+                                           )));
                               }
                             }
 

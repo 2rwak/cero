@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/Models/passwords.dart';
 import 'package:flutter_application_1/wallet/addToWallet.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:flutter_application_1/wallet/editWallet.dart';
-import 'package:get/route_manager.dart';
 
 class wallet extends StatefulWidget {
   final String Currentusername;
@@ -16,9 +16,14 @@ class wallet extends StatefulWidget {
 }
 
 class _walletState extends State<wallet> {
+  void initState() {
+    fireStore_helper.setUID(widget.Currentusername);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    int count = 0;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -56,7 +61,43 @@ class _walletState extends State<wallet> {
       backgroundColor: Color(0xFF141416),
       body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
         SizedBox(
-          height: 57,
+          height: 35,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: SizedBox(
+            width: 360,
+            height: 55,
+            child: TextField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(" "),
+                ],
+                style: TextStyle(color: Colors.white, fontSize: 18),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.search_outlined,
+                    size: 30,
+                    color: Color(0xFF616161),
+                  ),
+                  hintText: 'Search by platform',
+                  hintStyle: TextStyle(fontSize: 16, color: Color(0xFF616161)),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Color(0xff616161),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Color(0xFF8A70BE))),
+                )),
+          ),
+        ),
+        SizedBox(
+          height: 45,
         ),
         Padding(
           padding: const EdgeInsets.only(right: 170, bottom: 10),
@@ -93,8 +134,7 @@ class _walletState extends State<wallet> {
                             padding: const EdgeInsets.only(
                               left: 18,
                               right: 18,
-                              top: 12,
-                              bottom: 10,
+                              top: 5,
                             ),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,11 +153,21 @@ class _walletState extends State<wallet> {
                                           style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Color(0xFF8A70BE)))
+                                              color: Color(0xFF8A70BE))),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 1),
+                                        child: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.copy,
+                                              size: 30,
+                                              color: Color(0xFF8A70BE),
+                                            )),
+                                      )
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 16,
+                                    height: 1,
                                   ),
                                   Text(
                                     'UserName',
@@ -137,7 +187,7 @@ class _walletState extends State<wallet> {
                                     textAlign: TextAlign.start,
                                   ),
                                   SizedBox(
-                                    height: 10,
+                                    height: 5,
                                   ),
                                   Row(children: [
                                     Column(
@@ -166,53 +216,54 @@ class _walletState extends State<wallet> {
 
                                     //here :)
                                     ,
-                                    SizedBox(
-                                      width: 12,
-                                    ),
 
-                                    SizedBox(
-                                      width: 95,
-                                    ),
-                                    ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                          Color(0xFF8A70BE),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 137),
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                            Color(0xFF8A70BE),
+                                          ),
+                                          shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12))),
                                         ),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12))),
-                                      ),
-                                      onPressed: () {
-                                        fireStore_helper
-                                            .setUID(widget.Currentusername);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    editWallet(
-                                                        pass: passwords(
-                                                            platform: singlePass
-                                                                .platform,
-                                                            username: singlePass
-                                                                .username,
-                                                            password: singlePass
-                                                                .password,
-                                                            passId: singlePass
-                                                                .passId),
-                                                        toEdit: widget
-                                                            .Currentusername)));
-                                      },
-                                      child: Center(
-                                        child: Text(
-                                          'Edit',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            fontFamily: 'Inter',
+                                        onPressed: () {
+                                          fireStore_helper
+                                              .setUID(widget.Currentusername);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      editWallet(
+                                                          pass: passwords(
+                                                              platform:
+                                                                  singlePass
+                                                                      .platform,
+                                                              username:
+                                                                  singlePass
+                                                                      .username,
+                                                              password:
+                                                                  singlePass
+                                                                      .password,
+                                                              passId: singlePass
+                                                                  .passId),
+                                                          toEdit: widget
+                                                              .Currentusername)));
+                                        },
+                                        child: Center(
+                                          child: Text(
+                                            'Edit',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontFamily: 'Inter',
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -220,7 +271,7 @@ class _walletState extends State<wallet> {
 
                                     //delete
                                     SizedBox(
-                                      width: 6,
+                                      width: 0.1,
                                     ),
                                     IconButton(
                                         icon: Icon(
@@ -306,15 +357,7 @@ class _walletState extends State<wallet> {
                                   ]),
                                 ]))
                       ]));
-                      //if
-
-                      //else
-                      // else {
-                      //   return Text(
-                      //     'nothing',
-                      //     style: TextStyle(fontSize: 60),
-                      //   );
-                      // }
+             
                     },
                   ),
                 );

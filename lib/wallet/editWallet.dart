@@ -338,6 +338,6 @@ class _editWalletState extends State<editWallet> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) => navigationBar(Currentusername: widget.toEdit)));
+            builder: (_) => navigationBar(Currentusername: widget.toEdit,)));
   }
 }

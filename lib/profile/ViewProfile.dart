@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Models/users.dart';
 import 'package:flutter_application_1/general/LoginPage.dart';
+import 'package:flutter_application_1/navigationBar.dart';
 import 'package:flutter_application_1/profile/editProfile.dart';
+import 'package:flutter_application_1/profile/loginHistory.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
+import 'package:get/route_manager.dart';
 
 class ViewProfile extends StatefulWidget {
   final String who;
@@ -100,7 +103,19 @@ class _ViewProfileState extends State<ViewProfile> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.history_outlined,
+            color: Color(0xFF8A70BE),
+            size: 35,
+          ),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => loginHistory(username: widget.who)));
+          },
+        ),
         backgroundColor: Color(0xFF0F0C07),
         centerTitle: false,
         title: Text(

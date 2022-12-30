@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/profile/ViewProfile.dart';
-import 'package:flutter_application_1/docs.dart';
+import 'package:flutter_application_1/safety_box/safetybox.dart';
+import 'package:flutter_application_1/profile/loginHistory.dart';
 import 'package:flutter_application_1/wallet/wallet.dart';
 
 class navigationBar extends StatefulWidget {
   final String Currentusername;
-
   const navigationBar({
     super.key,
     required this.Currentusername,
@@ -32,10 +32,11 @@ class _navigationBarState extends State<navigationBar> {
       wallet(
         Currentusername: widget.Currentusername,
       ),
-      docs(),
+      safetybox(),
       ViewProfile(
         who: widget.Currentusername,
-      )
+      ),
+      loginHistory(username: widget.Currentusername)
     ];
     return Scaffold(
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
@@ -51,8 +52,8 @@ class _navigationBarState extends State<navigationBar> {
               label: 'Passwords',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.description_outlined),
-              label: 'Assets',
+              icon: Icon(Icons.lock_outlined),
+              label: 'Safety box',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.perm_identity),
