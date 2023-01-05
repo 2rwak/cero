@@ -325,6 +325,7 @@ class _editProfileState extends State<editProfile> {
         MaterialPageRoute(
             builder: (_) => navigationBar(
                   Currentusername: _usernameController!.text,
+                 
                 )));
   }
 }

@@ -34,14 +34,14 @@ class _signUpState extends State<signUp> {
   final IDController = TextEditingController();
   final isUnique isunique = new isUnique();
 
-  @override
-  void dispose() {
-    userNameController.dispose();
-    emailController.dispose();
-    phoneNoController.dispose();
-    IDController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   userNameController.dispose();
+  //   emailController.dispose();
+  //   phoneNoController.dispose();
+  //   IDController.dispose();
+  //   super.dispose();
+  // }
 
   Future<void> inserting() async {
     final profile = <String, String>{
@@ -590,7 +590,8 @@ class _signUpState extends State<signUp> {
                                         builder: (_) => navigationBar(
                                               Currentusername:
                                                   userNameController.text,
-                                           )));
+                                        
+                                            )));
                               }
                             }
 

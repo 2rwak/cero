@@ -328,7 +328,6 @@ class _editWalletState extends State<editWallet> {
   }
 
   void edit() async {
-    
     fireStore_helper.update(passwords(
         platform: _platformController!.text,
         username: _usernameController!.text,
@@ -338,6 +337,9 @@ class _editWalletState extends State<editWallet> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) => navigationBar(Currentusername: widget.toEdit,)));
+            builder: (_) => navigationBar(
+                  Currentusername: widget.toEdit,
+                 
+                )));
   }
 }

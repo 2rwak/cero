@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/profile/ViewProfile.dart';
+import 'package:flutter_application_1/safety_box/Files/files.dart';
+import 'package:flutter_application_1/safety_box/creditCard/creditcard.dart';
 import 'package:flutter_application_1/safety_box/safetybox.dart';
 import 'package:flutter_application_1/profile/loginHistory.dart';
 import 'package:flutter_application_1/wallet/wallet.dart';
 
 class navigationBar extends StatefulWidget {
   final String Currentusername;
-  const navigationBar({
-    super.key,
-    required this.Currentusername,
-  });
+
+  // 0) wallet
+  // 1) safety box
+  // 2) view profile
+  // 3) login history
+  // 4) credit card
+  // 5) files
+  const navigationBar(
+      {super.key, required this.Currentusername});
 
   // :super(key: key);
 
@@ -36,7 +43,9 @@ class _navigationBarState extends State<navigationBar> {
       ViewProfile(
         who: widget.Currentusername,
       ),
-      loginHistory(username: widget.Currentusername)
+      loginHistory(username: widget.Currentusername),
+      creditCard(),
+      files()
     ];
     return Scaffold(
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),

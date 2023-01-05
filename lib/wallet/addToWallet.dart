@@ -332,7 +332,7 @@ class _addToWalletState extends State<addToWallet> {
         context,
         MaterialPageRoute(
             builder: (_) => navigationBar(
-                  Currentusername: widget.current,
+                  Currentusername: widget.current, 
                 )));
   }
 }
