@@ -323,9 +323,8 @@ class _editProfileState extends State<editProfile> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) => navigationBar(
-                  Currentusername: _usernameController!.text,
-                 
+            builder: (_) => ViewProfile(
+                  who: _usernameController!.text,
                 )));
   }
 }

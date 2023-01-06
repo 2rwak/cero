@@ -17,9 +17,9 @@ class wallet extends StatefulWidget {
 }
 
 class _walletState extends State<wallet> {
+  bool flag = true;
   bool isVisible = true;
   String name = "";
-  int matched = 0;
 
   void initState() {
     fireStore_helper.setUID(widget.Currentusername);
@@ -76,6 +76,17 @@ class _walletState extends State<wallet> {
             height: 35,
           ),
           Padding(
+            padding: const EdgeInsets.only(right: 220, bottom: 19),
+            child: Text(
+              'Passwords',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+              textAlign: TextAlign.left,
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
             ),
@@ -115,622 +126,635 @@ class _walletState extends State<wallet> {
             ),
           ),
           SizedBox(
-            height: 45,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 170, bottom: 10),
-            child: Text(
-              '  Your passwords',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-              textAlign: TextAlign.left,
-            ),
+            height: 15,
           ),
           StreamBuilder<List<passwords>>(
               stream: fireStore_helper.read(),
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  fireStore_helper.setUID(widget.Currentusername);
-                  final passdata = snapshot.data;
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: passdata!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final singlePass = passdata[index];
-                        if (name.isEmpty) {
-                          return Container(
-                              child: Column(children: [
-                            SizedBox(
-                              height: 17,
-                            ),
-                            Container(
-                                width: 360,
-                                height: 160,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: Color(0xff1b1b1e),
-                                ),
-                                padding: const EdgeInsets.only(
-                                  left: 18,
-                                  right: 18,
-                                  top: 1,
-                                ),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.vpn_key_outlined,
-                                            color: Color(0xFF8A70BE),
-                                            size: 22,
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Text('${singlePass.platform}',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF8A70BE))),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 180),
-                                            child: IconButton(
-                                                onPressed: () {
-                                                  Clipboard.setData(
-                                                      ClipboardData(
-                                                          text: singlePass
-                                                              .password));
-
-                                                  Fluttertoast.showToast(
-                                                    msg: "Password copied",
-                                                    toastLength:
-                                                        Toast.LENGTH_SHORT,
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    timeInSecForIosWeb: 2,
-                                                    backgroundColor:
-                                                        Color(0xFF0F0C07),
-                                                    textColor: Colors.white,
-                                                    fontSize: 14.0,
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  Icons.copy,
-                                                  size: 25,
-                                                  color: Color(0xFF8A70BE),
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 1,
-                                      ),
-                                      Text(
-                                        'UserName',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFFDADADA)),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(
-                                        ' ${singlePass.username}',
-                                        style: TextStyle(
-                                            color: Color(0xFFB7B7B7),
-                                            fontSize: 13),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                      SizedBox(
-                                        height: 9,
-                                      ),
-                                      Row(children: [
-                                         
-                                        Column(
-                                           
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Password',
+                  if (flag) {
+                    fireStore_helper.setUID(widget.Currentusername);
+                    final passdata = snapshot.data;
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: passdata!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final singlePass = passdata[index];
+                          if (name.isEmpty) {
+                            return Container(
+                                child: Column(children: [
+                              SizedBox(
+                                height: 17,
+                              ),
+                              Container(
+                                  width: 360,
+                                  height: 160,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: Color(0xff1b1b1e),
+                                  ),
+                                  padding: const EdgeInsets.only(
+                                    left: 18,
+                                    right: 18,
+                                    top: 4,
+                                  ),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.vpn_key_outlined,
+                                              color: Color(0xFF8A70BE),
+                                              size: 22,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text('${singlePass.platform}',
                                                 style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize: 20,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Color(0xFFDADADA)),
-                                                textAlign: TextAlign.left,
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Visibility(
-                                              
-                                                visible: isVisible,
-                                                child: Text(
-                                                  count(singlePass.password
-                                                      .toString()
-                                                      .length),
-                                                  style: TextStyle(
-                                                      color: Color(0xFFB7B7B7),
-                                                      fontSize: 13),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                                replacement: Text(
-                                                  '${singlePass.password}',
-                                                  style: TextStyle(
-                                                      color: Color(0xFFB7B7B7),
-                                                      fontSize: 13),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                                
-                                              )
-                                            ]),
-                                            
+                                                    color: Color(0xFF8A70BE))),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 1),
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    Clipboard.setData(
+                                                        ClipboardData(
+                                                            text: singlePass
+                                                                .password));
 
-                                        IconButton(
-                                          onPressed: () {
-                                            setState(() {});
-                                            isVisible = !isVisible;
-                                          },
-                                          icon: Icon(
-                                            isVisible
-                                                ? Icons.visibility
-                                                : Icons.visibility_off,
-                                            color: Color(0xff616161),
-                                            size: 20,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 88),
-                                          child: ElevatedButton(
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                Color(0xFF8A70BE),
-                                              ),
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12))),
+                                                    Fluttertoast.showToast(
+                                                      msg: "Password copied",
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Color(0xFF0F0C07),
+                                                      textColor: Colors.white,
+                                                      fontSize: 14.0,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.copy,
+                                                    size: 25,
+                                                    color: Color(0xFF8A70BE),
+                                                  )),
                                             ),
-                                            onPressed: () {
-                                              fireStore_helper.setUID(
-                                                  widget.Currentusername);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => editWallet(
-                                                          pass: passwords(
-                                                              platform:
-                                                                  singlePass
-                                                                      .platform,
-                                                              username:
-                                                                  singlePass
-                                                                      .username,
-                                                              password:
-                                                                  singlePass
-                                                                      .password,
-                                                              passId: singlePass
-                                                                  .passId),
-                                                          toEdit: widget
-                                                              .Currentusername)));
-                                            },
-                                            child: Center(
-                                              child: Text(
-                                                'Edit',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                  fontFamily: 'Inter',
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          ],
                                         ),
-
-                                        //delete
                                         SizedBox(
-                                          width: 0.1,
+                                          height: 1,
                                         ),
-                                        IconButton(
-                                            icon: Icon(
-                                              Icons.delete_outlined,
-                                              color: Color(0xFFEC1F1F),
-                                              size: 32,
-                                            ),
+                                        Text(
+                                          'UserName',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFFDADADA)),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        Text(
+                                          ' ${singlePass.username}',
+                                          style: TextStyle(
+                                              color: Color(0xFFB7B7B7),
+                                              fontSize: 13),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        SizedBox(
+                                          height: 9,
+                                        ),
+                                        Row(children: [
+                                          Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Password',
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Color(0xFFDADADA)),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Visibility(
+                                                  visible: isVisible,
+                                                  child: Text(
+                                                    count(singlePass.password
+                                                        .toString()
+                                                        .length),
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFFB7B7B7),
+                                                        fontSize: 13),
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                  replacement: Text(
+                                                    '${singlePass.password}',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFFB7B7B7),
+                                                        fontSize: 13),
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                )
+                                              ]),
+
+                                          IconButton(
                                             onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Center(
-                                                      child: AlertDialog(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12.0)),
-                                                        backgroundColor:
-                                                            Color(0xFF141416),
-                                                        title: Text(
-                                                          'Delete',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 18),
-                                                        ),
-                                                        content: Text(
-                                                            'Are you sure you want to delete this password ? ',
+                                              setState(() {});
+                                              isVisible = !isVisible;
+                                            },
+                                            icon: Icon(
+                                              isVisible
+                                                  ? Icons.visibility
+                                                  : Icons.visibility_off,
+                                              color: Color(0xff616161),
+                                              size: 20,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 88),
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                  Color(0xFF8A70BE),
+                                                ),
+                                                shape: MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12))),
+                                              ),
+                                              onPressed: () {
+                                                fireStore_helper.setUID(
+                                                    widget.Currentusername);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => editWallet(
+                                                            pass: passwords(
+                                                                platform:
+                                                                    singlePass
+                                                                        .platform,
+                                                                username:
+                                                                    singlePass
+                                                                        .username,
+                                                                password:
+                                                                    singlePass
+                                                                        .password,
+                                                                passId:
+                                                                    singlePass
+                                                                        .passId),
+                                                            toEdit: widget
+                                                                .Currentusername)));
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  'Edit',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontFamily: 'Inter',
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          //delete
+                                          SizedBox(
+                                            width: 0.1,
+                                          ),
+                                          IconButton(
+                                              icon: Icon(
+                                                Icons.delete_outlined,
+                                                color: Color(0xFFEC1F1F),
+                                                size: 32,
+                                              ),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Center(
+                                                        child: AlertDialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.0)),
+                                                          backgroundColor:
+                                                              Color(0xFF141416),
+                                                          title: Text(
+                                                            'Delete',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 16)),
-                                                        actions: [
-                                                          ElevatedButton(
-                                                              style: ButtonStyle(
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty.all(
-                                                                          Color(
-                                                                              0xFF4E5053))),
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'Cancel',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          14))),
-                                                          SizedBox(
-                                                            width: 10,
+                                                                fontSize: 18),
                                                           ),
-                                                          ElevatedButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                backgroundColor:
-                                                                    MaterialStateProperty
-                                                                        .all(
-                                                                  Color(
-                                                                      0xFFEC1F1F),
+                                                          content: Text(
+                                                              'Are you sure you want to delete this password ? ',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      16)),
+                                                          actions: [
+                                                            ElevatedButton(
+                                                                style: ButtonStyle(
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(Color(
+                                                                            0xFF4E5053))),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Cancel',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14))),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            ElevatedButton(
+                                                                style:
+                                                                    ButtonStyle(
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                    Color(
+                                                                        0xFFEC1F1F),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              onPressed: () {
-                                                                fireStore_helper
-                                                                    .setUID(widget
-                                                                        .Currentusername);
-                                                                fireStore_helper
-                                                                    .delete(
-                                                                        singlePass);
+                                                                onPressed: () {
+                                                                  fireStore_helper
+                                                                      .setUID(widget
+                                                                          .Currentusername);
+                                                                  fireStore_helper
+                                                                      .delete(
+                                                                          singlePass);
 
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'Delete',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          14)))
-                                                        ],
-                                                      ),
-                                                    );
-                                                  });
-                                            })
-                                      ]),
-                                    ]))
-                          ]));
-                        } else if (singlePass.platform
-                            .toString()
-                            .startsWith(name.toLowerCase())) {
-                          matched++;
-                          return Container(
-                              child: Column(children: [
-                            SizedBox(
-                              height: 17,
-                            ),
-                            Container(
-                                width: 360,
-                                height: 160,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: Color(0xff1b1b1e),
-                                ),
-                                padding: const EdgeInsets.only(
-                                  left: 18,
-                                  right: 18,
-                                  top: 1,
-                                ),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.vpn_key_outlined,
-                                            color: Color(0xFF8A70BE),
-                                            size: 22,
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Text('${singlePass.platform}',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF8A70BE))),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 180),
-                                            child: IconButton(
-                                                onPressed: () {
-                                                  Clipboard.setData(
-                                                      ClipboardData(
-                                                          text: singlePass
-                                                              .password));
-
-                                                  Fluttertoast.showToast(
-                                                    msg: "Password copied",
-                                                    toastLength:
-                                                        Toast.LENGTH_SHORT,
-                                                    gravity:
-                                                        ToastGravity.CENTER,
-                                                    timeInSecForIosWeb: 2,
-                                                    backgroundColor:
-                                                        Color(0xFF0F0C07),
-                                                    textColor: Colors.white,
-                                                    fontSize: 14.0,
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  Icons.copy,
-                                                  size: 25,
-                                                  color: Color(0xFF8A70BE),
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 1,
-                                      ),
-                                      Text(
-                                        'UserName',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFFDADADA)),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(
-                                        ' ${singlePass.username}',
-                                        style: TextStyle(
-                                            color: Color(0xFFB7B7B7),
-                                            fontSize: 13),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                      SizedBox(
-                                        height: 9,
-                                      ),
-                                      Row(children: [
-                                        Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Password',
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xFFDADADA)),
-                                                textAlign: TextAlign.left,
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Visibility(
-                                                visible: isVisible,
-                                                child: Text(
-                                                  count(singlePass.password
-                                                      .toString()
-                                                      .length),
-                                                  style: TextStyle(
-                                                      color: Color(0xFFB7B7B7),
-                                                      fontSize: 13),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                                replacement: Text(
-                                                  '${singlePass.password}',
-                                                  style: TextStyle(
-                                                      color: Color(0xFFB7B7B7),
-                                                      fontSize: 13),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                              )
-                                            ]),
-
-                                        IconButton(
-                                          onPressed: () {
-                                            setState(() {});
-                                            isVisible = !isVisible;
-                                          },
-                                          icon: Icon(
-                                            isVisible
-                                                ? Icons.visibility
-                                                : Icons.visibility_off,
-                                            color: Color(0xff616161),
-                                            size: 20,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 88),
-                                          child: ElevatedButton(
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                Color(0xFF8A70BE),
-                                              ),
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12))),
-                                            ),
-                                            onPressed: () {
-                                              fireStore_helper.setUID(
-                                                  widget.Currentusername);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => editWallet(
-                                                          pass: passwords(
-                                                              platform:
-                                                                  singlePass
-                                                                      .platform,
-                                                              username:
-                                                                  singlePass
-                                                                      .username,
-                                                              password:
-                                                                  singlePass
-                                                                      .password,
-                                                              passId: singlePass
-                                                                  .passId),
-                                                          toEdit: widget
-                                                              .Currentusername)));
-                                            },
-                                            child: Center(
-                                              child: Text(
-                                                'Edit',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                  fontFamily: 'Inter',
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
-                                        //delete
-                                        SizedBox(
-                                          width: 0.1,
-                                        ),
-                                        IconButton(
-                                            icon: Icon(
-                                              Icons.delete_outlined,
-                                              color: Color(0xFFEC1F1F),
-                                              size: 32,
-                                            ),
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Center(
-                                                      child: AlertDialog(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12.0)),
-                                                        backgroundColor:
-                                                            Color(0xFF141416),
-                                                        title: Text(
-                                                          'Delete',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 18),
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Delete',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14)))
+                                                          ],
                                                         ),
-                                                        content: Text(
-                                                            'Are you sure you want to delete this password ? ',
+                                                      );
+                                                    });
+                                              })
+                                        ]),
+                                      ]))
+                            ]));
+                          } else if (singlePass.platform
+                              .toString()
+                              .startsWith(name.toLowerCase())) {
+                            return Container(
+                                child: Column(children: [
+                              SizedBox(
+                                height: 17,
+                              ),
+                              Container(
+                                  width: 360,
+                                  height: 160,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: Color(0xff1b1b1e),
+                                  ),
+                                  padding: const EdgeInsets.only(
+                                    left: 18,
+                                    right: 18,
+                                    top: 1,
+                                  ),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.vpn_key_outlined,
+                                              color: Color(0xFF8A70BE),
+                                              size: 22,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text('${singlePass.platform}',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFF8A70BE))),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 1),
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    Clipboard.setData(
+                                                        ClipboardData(
+                                                            text: singlePass
+                                                                .password));
+
+                                                    Fluttertoast.showToast(
+                                                      msg: "Password copied",
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 2,
+                                                      backgroundColor:
+                                                          Color(0xFF0F0C07),
+                                                      textColor: Colors.white,
+                                                      fontSize: 14.0,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.copy,
+                                                    size: 25,
+                                                    color: Color(0xFF8A70BE),
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 1,
+                                        ),
+                                        Text(
+                                          'UserName',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFFDADADA)),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        Text(
+                                          ' ${singlePass.username}',
+                                          style: TextStyle(
+                                              color: Color(0xFFB7B7B7),
+                                              fontSize: 13),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        SizedBox(
+                                          height: 9,
+                                        ),
+                                        Row(children: [
+                                          Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Password',
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Color(0xFFDADADA)),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Visibility(
+                                                  visible: isVisible,
+                                                  child: Text(
+                                                    count(singlePass.password
+                                                        .toString()
+                                                        .length),
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFFB7B7B7),
+                                                        fontSize: 13),
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                  replacement: Text(
+                                                    '${singlePass.password}',
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFFB7B7B7),
+                                                        fontSize: 13),
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                )
+                                              ]),
+
+                                          IconButton(
+                                            onPressed: () {
+                                              setState(() {});
+                                              isVisible = !isVisible;
+                                            },
+                                            icon: Icon(
+                                              isVisible
+                                                  ? Icons.visibility
+                                                  : Icons.visibility_off,
+                                              color: Color(0xff616161),
+                                              size: 20,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 88),
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                  Color(0xFF8A70BE),
+                                                ),
+                                                shape: MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12))),
+                                              ),
+                                              onPressed: () {
+                                                fireStore_helper.setUID(
+                                                    widget.Currentusername);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => editWallet(
+                                                            pass: passwords(
+                                                                platform:
+                                                                    singlePass
+                                                                        .platform,
+                                                                username:
+                                                                    singlePass
+                                                                        .username,
+                                                                password:
+                                                                    singlePass
+                                                                        .password,
+                                                                passId:
+                                                                    singlePass
+                                                                        .passId),
+                                                            toEdit: widget
+                                                                .Currentusername)));
+                                              },
+                                              child: Center(
+                                                child: Text(
+                                                  'Edit',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontFamily: 'Inter',
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          //delete
+                                          SizedBox(
+                                            width: 0.1,
+                                          ),
+                                          IconButton(
+                                              icon: Icon(
+                                                Icons.delete_outlined,
+                                                color: Color(0xFFEC1F1F),
+                                                size: 32,
+                                              ),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Center(
+                                                        child: AlertDialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.0)),
+                                                          backgroundColor:
+                                                              Color(0xFF141416),
+                                                          title: Text(
+                                                            'Delete',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 16)),
-                                                        actions: [
-                                                          ElevatedButton(
-                                                              style: ButtonStyle(
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty.all(
-                                                                          Color(
-                                                                              0xFF4E5053))),
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'Cancel',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          14))),
-                                                          SizedBox(
-                                                            width: 10,
+                                                                fontSize: 18),
                                                           ),
-                                                          ElevatedButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                backgroundColor:
-                                                                    MaterialStateProperty
-                                                                        .all(
-                                                                  Color(
-                                                                      0xFFEC1F1F),
+                                                          content: Text(
+                                                              'Are you sure you want to delete this password ? ',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      16)),
+                                                          actions: [
+                                                            ElevatedButton(
+                                                                style: ButtonStyle(
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(Color(
+                                                                            0xFF4E5053))),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Cancel',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14))),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            ElevatedButton(
+                                                                style:
+                                                                    ButtonStyle(
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                    Color(
+                                                                        0xFFEC1F1F),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              onPressed: () {
-                                                                fireStore_helper
-                                                                    .setUID(widget
-                                                                        .Currentusername);
-                                                                fireStore_helper
-                                                                    .delete(
-                                                                        singlePass);
+                                                                onPressed: () {
+                                                                  fireStore_helper
+                                                                      .setUID(widget
+                                                                          .Currentusername);
+                                                                  fireStore_helper
+                                                                      .delete(
+                                                                          singlePass);
 
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'Delete',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          14)))
-                                                        ],
-                                                      ),
-                                                    );
-                                                  });
-                                            })
-                                      ]),
-                                    ]))
-                          ]));
-                        } else {
-                          return Center(
-                            child: Text('No matched platform ',
-                                style: TextStyle(
-                                    color: Color(0xFFB7B7B7), fontSize: 20)),
-                          );
-                        }
-                      },
-                    ),
-                  );
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Delete',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14)))
+                                                          ],
+                                                        ),
+                                                      );
+                                                    });
+                                              })
+                                        ]),
+                                      ]))
+                            ]));
+                          }
+                          if (!matching(passdata, name) &&
+                              name.isNotEmpty &&
+                              index == 0) {
+                            return Center(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 100,
+                                  ),
+                                  Text('No matched platform',
+                                      style: TextStyle(
+                                          color: Color(0xFFB7B7B7),
+                                          fontSize: 20)),
+                                ],
+                              ),
+                            );
+                          } else
+                          // if (name.isNotEmpty &&
+                          //     !matching(passdata, name))
+                          {
+                            return Center(
+                              child: Text(' ',
+                                  style: TextStyle(
+                                      color: Color(0xFFB7B7B7), fontSize: 20)),
+                            );
+                          }
+                        },
+                      ),
+                    );
+                  }
                 }
                 return Center(
                     child: Column(
@@ -756,5 +780,21 @@ class _walletState extends State<wallet> {
     for (int i = 0; i < len; i++) counter += '*';
 
     return counter;
+  }
+
+  bool matching(List<passwords>? list, String name2) {
+    // for (int i = 0; i < list.length; i++) {
+    //   if (list[i].platform.toString().startsWith(name2.toLowerCase())) {
+    //     isMatch = true;
+    //   }
+    // }
+    int? len = list?.length;
+    for (int i = 0; i < len!; i++) {
+      if (list![i].platform.toString().startsWith(name2.toLowerCase())) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

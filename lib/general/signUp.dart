@@ -11,12 +11,13 @@ import 'package:flutter_application_1/profile/ViewProfile.dart';
 // import 'package:flutter_application_1/general/localAuth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_application_1/navigationBar.dart';
+import 'package:flutter_application_1/wallet/wallet.dart';
 
 class signUp extends StatefulWidget {
   @override
   State<signUp> createState() => _signUpState();
   const signUp({Key? key}) : super(key: key);
-}
+}     
 
 class _signUpState extends State<signUp> {
   _signUpState({Key? key});
@@ -587,10 +588,9 @@ class _signUpState extends State<signUp> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => navigationBar(
+                                        builder: (_) => wallet(
                                               Currentusername:
                                                   userNameController.text,
-                                        
                                             )));
                               }
                             }

@@ -238,12 +238,7 @@ class _addToWalletState extends State<addToWallet> {
             Center(
                 child: InkWell(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => navigationBar(
-                              Currentusername: widget.current,
-                            )));
+                Navigator.pop(context);
               },
               child: Container(
                 height: 41,
@@ -331,8 +326,8 @@ class _addToWalletState extends State<addToWallet> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) => navigationBar(
-                  Currentusername: widget.current, 
+            builder: (_) => wallet(
+                  Currentusername: widget.current,
                 )));
   }
 }

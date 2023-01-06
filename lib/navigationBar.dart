@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/profile/ViewProfile.dart';
 import 'package:flutter_application_1/safety_box/Files/files.dart';
@@ -9,14 +10,7 @@ import 'package:flutter_application_1/wallet/wallet.dart';
 class navigationBar extends StatefulWidget {
   final String Currentusername;
 
-  // 0) wallet
-  // 1) safety box
-  // 2) view profile
-  // 3) login history
-  // 4) credit card
-  // 5) files
-  const navigationBar(
-      {super.key, required this.Currentusername});
+  const navigationBar({super.key, required this.Currentusername});
 
   // :super(key: key);
 
@@ -35,42 +29,74 @@ class _navigationBarState extends State<navigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _widgetOptions = <Widget>[
-      wallet(
-        Currentusername: widget.Currentusername,
-      ),
-      safetybox(),
-      ViewProfile(
-        who: widget.Currentusername,
-      ),
-      loginHistory(username: widget.Currentusername),
-      creditCard(),
-      files()
-    ];
-    return Scaffold(
-      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-      bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Color(0xFF8A70BE),
+    return CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
           backgroundColor: Color(0xFF0F0C07),
-          unselectedItemColor: Color(0xFF4E5053),
-          selectedFontSize: 13,
+
           iconSize: 30,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.vpn_key_outlined),
-              label: 'Passwords',
-            ),
+                icon: Icon(
+                  Icons.vpn_key_outlined,
+                  color: Color(0xFF4E5053),
+                ),
+                activeIcon:
+                    Icon(Icons.vpn_key_outlined, color: Color(0xFF8A70BE))),
             BottomNavigationBarItem(
-              icon: Icon(Icons.lock_outlined),
-              label: 'Safety box',
-            ),
+                icon: Icon(
+                  Icons.lock_outlined,
+                  color: Color(0xFF4E5053),
+                ),
+                activeIcon: Icon(
+                  Icons.lock_outlined,
+                  color: Color(0xFF8A70BE),
+                )),
             BottomNavigationBarItem(
-              icon: Icon(Icons.perm_identity),
-              label: 'Profile',
-            ),
+                icon: Icon(
+                  Icons.perm_identity,
+                  color: Color(0xFF4E5053),
+                ),
+                activeIcon: Icon(
+                  Icons.perm_identity,
+                  color: Color(0xFF8A70BE),
+                )),
           ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTap),
-    );
+          // currentIndex: _selectedIndex,
+          // onTap: _onItemTap),
+        ),
+        tabBuilder: (context, index) {
+          switch (index) {
+            case 0:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: wallet(Currentusername: widget.Currentusername),
+                );
+              });
+            case 1:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Container(child: safetybox()),
+                );
+              });
+            case 2:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Container(
+                    child: ViewProfile(who: widget.Currentusername),
+                  ),
+                );
+              });
+            default:
+              CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Container(
+                    child: Text("page dates "),
+                  ),
+                );
+              });
+          }
+          ;
+          return Container();
+        });
   }
 }
