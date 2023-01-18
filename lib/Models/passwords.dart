@@ -24,4 +24,6 @@ class passwords {
         'password': password,
         'passId': passId
       };
+
+  void toList() {}
 }

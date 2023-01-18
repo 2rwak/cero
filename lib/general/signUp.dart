@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/general/isUnique.dart';
 
+import 'package:device_info/device_info.dart';
+
 import 'package:flutter_application_1/general/LoginPage.dart';
 import 'package:flutter_application_1/profile/ViewProfile.dart';
 // import 'package:flutter_application_1/general/localAuth.dart';
@@ -13,11 +15,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_application_1/navigationBar.dart';
 import 'package:flutter_application_1/wallet/wallet.dart';
 
+import '../email_alert/device_type.dart';
+
 class signUp extends StatefulWidget {
   @override
   State<signUp> createState() => _signUpState();
   const signUp({Key? key}) : super(key: key);
-}     
+}
 
 class _signUpState extends State<signUp> {
   _signUpState({Key? key});
@@ -28,13 +32,15 @@ class _signUpState extends State<signUp> {
   String phoneNo = '';
   String ID = '';
   final valid = true;
+  String deviceSetUp = '';
 // Arwa 22/12
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNoController = TextEditingController();
   final IDController = TextEditingController();
   final isUnique isunique = new isUnique();
-
+  final deviceType device_obj = new deviceType();
+  final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
   // @override
   // void dispose() {
   //   userNameController.dispose();
@@ -49,7 +55,8 @@ class _signUpState extends State<signUp> {
       'ID': ID,
       'email': email,
       'phoneNo': phoneNo,
-      'username': username
+      'username': username,
+      'SetUpdevice': deviceSetUp,
     };
     final loginHistory = <String, String>{
       'Device': "",
@@ -161,7 +168,9 @@ class _signUpState extends State<signUp> {
           SizedBox(height: 6),
           Container(
             width: 450,
-            height: 550,
+            //new====================
+            height: 630,
+            //================
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               color: Color(0xff1b1b1e),
@@ -464,77 +473,140 @@ class _signUpState extends State<signUp> {
                           fontSize: 19,
                         )),
                   ),
+                  //new=======================================
                   SizedBox(
                     height: 22,
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     Container(
-                  //       height: 50,
-                  //       width: 60,
-                  //       child: Image(
-                  //         image: AssetImage('assets/face.png'),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 60,
+                        child: Image(
+                          image: AssetImage('assets/face.png'),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     height: 18,
                   ),
-                  // Center(
-                  //   child: Container(
-                  //     height: 27,
-                  //     width: 219,
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(7),
-                  //       color: Color(0xFF4E5053),
-                  //     ),
-                  //     child: Center(
-                  //         // child: GestureDetector(
-                  //         //   onTap: () async {
-                  //         //     bool isAuthenticated =
-                  //         //         await LocalAuth.authenticate();
-                  //         //     if (isAuthenticated &&
-                  //         //         !username.isEmpty &&
-                  //         //         !email.isEmpty &&
-                  //         //         phoneNo != 0 &&
-                  //         //         nationalID != 0) {
-                  //         //       Navigator.push(
-                  //         //         context,
-                  //         //         MaterialPageRoute(
-                  //         //             builder: (context) =>
-                  //         //                 const navigationBar()),
-                  //         //       );
-                  //         //     } else {
-                  //         //       ScaffoldMessenger.of(context).showSnackBar(
-                  //         //         const SnackBar(
-                  //         //           content: Text('Authentication failed.'),
-                  //         //         ),
-                  //         //       );
-                  //         //     }
-                  //         //   },
-                  //         // child: Text(
-                  //         //   'Set Up Face Id',
-                  //         //   textAlign: TextAlign.center,
-                  //         //   style: TextStyle(
-                  //         //     color: Colors.white,
-                  //         //     fontSize: 14,
-                  //         //     fontFamily: 'Inter',
-                  //         //   ),
-                  //         // ),
-                  //         // ),
-                  //         ),
-                  //   ),
-                  // ),
+                  Center(
+                    child: Container(
+                      height: 27,
+                      width: 219,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                        color: Color(0xFF4E5053),
+                      ),
+                      child: Center(
+                        child: InkWell(
+                            child: Container(
+                          child: Center(
+                            child: GestureDetector(
+                              /////////////////////////////////////////////////////
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Center(
+                                        child: AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0)),
+                                          backgroundColor: Color(0xFF141416),
+                                          title: Text(
+                                            'Set Up Face Id',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18),
+                                          ),
+                                          content: Text(
+                                              'Do you want to add this device to your account so that you can log in with your face Id?',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16)),
+                                          actions: [
+                                            ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Color(
+                                                                0xFF4E5053))),
+                                                onPressed: () async {
+                                                  // Navigator.pop(context);
+                                                  var data =
+                                                      await deviceInfoPlugin
+                                                          .iosInfo;
 
+                                                  var deviceName = data.name;
+                                                  var deviceVersion =
+                                                      data.systemVersion;
+                                                  var identifier =
+                                                      data.identifierForVendor;
+                                                  deviceSetUp = deviceName +
+                                                      " " +
+                                                      deviceVersion +
+                                                      " " +
+                                                      identifier;
+                                                  Navigator.pop(
+                                                    context,
+                                                  );
+                                                },
+                                                child: Text('Add',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14))),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            ElevatedButton(
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                    Color(0xFFEC1F1F),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(
+                                                    context,
+                                                  );
+                                                },
+                                                child: Text('Cancel',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14)))
+                                          ],
+                                        ),
+                                      );
+                                    });
+                              },
+                              child: Text(
+                                'Set Up Face Id',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: 'Inter',
+                                ),
+                              ),
+                            ),
+                          ),
+                        )),
+                      ),
+                    ),
+                  ),
+                  //=====================================================
+                  SizedBox(
+                    height: 20,
+                  ),
                   Center(
                       child: InkWell(
-                    // onTap: () {
-                    //   // inserting();
-                    //   Navigator.push(context,
-                    //       MaterialPageRoute(builder: (_) => navigationBar()));
-                    // },
                     child: Container(
                       height: 50,
                       width: 327,
@@ -588,10 +660,7 @@ class _signUpState extends State<signUp> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (_) => wallet(
-                                              Currentusername:
-                                                  userNameController.text,
-                                            )));
+                                        builder: (_) => LoginPage()));
                               }
                             }
 

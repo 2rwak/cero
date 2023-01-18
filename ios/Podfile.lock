@@ -609,6 +609,40 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
   - device_info (0.0.1):
     - Flutter
+  - DKImagePickerController/Core (4.3.4):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.4)
+  - DKImagePickerController/PhotoGallery (4.3.4):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.4)
+  - DKPhotoGallery (0.0.17):
+    - DKPhotoGallery/Core (= 0.0.17)
+    - DKPhotoGallery/Model (= 0.0.17)
+    - DKPhotoGallery/Preview (= 0.0.17)
+    - DKPhotoGallery/Resource (= 0.0.17)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - file_picker (0.0.1):
+    - DKImagePickerController/PhotoGallery
+    - Flutter
   - Firebase/Auth (10.3.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.3.0)
@@ -620,26 +654,37 @@ PODS:
   - Firebase/Firestore (10.3.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 10.3.0)
+  - Firebase/Storage (10.3.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 10.3.0)
   - firebase_auth (4.2.1):
     - Firebase/Auth (= 10.3.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.4.0):
+  - firebase_core (2.4.1):
     - Firebase/CoreOnly (= 10.3.0)
     - Flutter
   - firebase_database (10.0.8):
     - Firebase/Database (= 10.3.0)
     - firebase_core
     - Flutter
+  - firebase_storage (11.0.10):
+    - Firebase/Storage (= 10.3.0)
+    - firebase_core
+    - Flutter
+  - FirebaseAppCheckInterop (10.3.0)
   - FirebaseAuth (10.3.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
     - GoogleUtilities/Environment (~> 7.8)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
+  - FirebaseAuthInterop (10.3.0)
   - FirebaseCore (10.3.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
+  - FirebaseCoreExtension (10.3.0):
+    - FirebaseCore (~> 10.0)
   - FirebaseCoreInternal (10.3.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseDatabase (10.3.0):
@@ -658,7 +703,17 @@ PODS:
     - "gRPC-C++ (~> 1.44.0)"
     - leveldb-library (~> 1.22)
     - nanopb (< 2.30910.0, >= 2.30908.0)
+  - FirebaseStorage (10.3.0):
+    - FirebaseAppCheckInterop (~> 10.0)
+    - FirebaseAuthInterop (~> 10.0)
+    - FirebaseCore (~> 10.0)
+    - FirebaseCoreExtension (~> 10.0)
+    - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - flutter_pdfview (1.0.2):
+    - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
   - fluttertoast (0.0.2):
@@ -752,32 +807,55 @@ PODS:
   - path_provider_ios (0.0.1):
     - Flutter
   - PromisesObjC (2.1.1)
+  - SDWebImage (5.14.3):
+    - SDWebImage/Core (= 5.14.3)
+  - SDWebImage/Core (5.14.3)
+  - share_plus (0.0.1):
+    - Flutter
+  - SwiftyGif (5.4.3)
+  - syncfusion_flutter_pdfviewer (0.0.1):
+    - Flutter
   - Toast (4.0.0)
+  - url_launcher_ios (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
+  - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoding (from `.symlinks/plugins/geocoding/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
+  - syncfusion_flutter_pdfviewer (from `.symlinks/plugins/syncfusion_flutter_pdfviewer/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
   trunk:
     - abseil
     - BoringSSL-GRPC
+    - DKImagePickerController
+    - DKPhotoGallery
     - Firebase
+    - FirebaseAppCheckInterop
     - FirebaseAuth
+    - FirebaseAuthInterop
     - FirebaseCore
+    - FirebaseCoreExtension
     - FirebaseCoreInternal
     - FirebaseDatabase
     - FirebaseFirestore
+    - FirebaseStorage
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -786,6 +864,8 @@ SPEC REPOS:
     - Libuv-gRPC
     - nanopb
     - PromisesObjC
+    - SDWebImage
+    - SwiftyGif
     - Toast
 
 EXTERNAL SOURCES:
@@ -793,14 +873,22 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_database:
     :path: ".symlinks/plugins/firebase_database/ios"
+  firebase_storage:
+    :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_pdfview:
+    :path: ".symlinks/plugins/flutter_pdfview/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   fluttertoast:
@@ -813,22 +901,38 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/local_auth_ios/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
+  syncfusion_flutter_pdfviewer:
+    :path: ".symlinks/plugins/syncfusion_flutter_pdfviewer/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   cloud_firestore: e6d4d16c6af7ecebd7254f12c3c1bb9bc87e5aca
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
+  DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
+  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
+  file_picker: ce3938a0df3cc1ef404671531facef740d03f920
   Firebase: f92fc551ead69c94168d36c2b26188263860acd9
   firebase_auth: 30cbdb28d5c38f572c331a8590a93e2a1201d75c
-  firebase_core: 6f2f753e316765799d88568232ed59e300ff53db
+  firebase_core: bf59c32d2e53814f558efa20840c1902fa2fe461
   firebase_database: feb0f550d474843da34fdefa92c11f1b6326d935
+  firebase_storage: 8b85bf19de50a1886f9387924fbddf066a718965
+  FirebaseAppCheckInterop: 9fc57dfa08f0abb737b185ea065422b55355c909
   FirebaseAuth: 0e415d29d846c1dce2fb641e46f35e9888d9bec6
+  FirebaseAuthInterop: 7a766bd56971347e0de4b7674aaa62ddc7820097
   FirebaseCore: 988754646ab3bd4bdcb740f1bfe26b9f6c0d5f2a
+  FirebaseCoreExtension: 93d252fabdc9696bf14a73b04d84877ab9b3a832
   FirebaseCoreInternal: 29b76f784d607df8b2a1259d73c3f04f1210137b
   FirebaseDatabase: d0732ba8aece0eccfa0cfb3ef540e7ba6fa1c6a6
   FirebaseFirestore: 244f71ff14ef44f39e00b44d356eac708ce03103
+  FirebaseStorage: 0efbff0ac978981866d89804191688ae50d64033
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   fluttertoast: eb263d302cc92e04176c053d2385237e9f43fad0
   geocoding: 32cfcdb16d38d907caaba65e2e42ad10d38bee58
@@ -843,7 +947,12 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  SDWebImage: 9c36e66c8ce4620b41a7407698dda44211a96764
+  share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
+  SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
+  syncfusion_flutter_pdfviewer: bb9998884b864cfedf72628df3503bdf57e397c0
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
 PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
 

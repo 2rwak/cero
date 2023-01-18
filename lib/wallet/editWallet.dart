@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/Models/passwords.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:flutter_application_1/navigationBar.dart';
+import 'package:flutter_application_1/wallet/addToWallet.dart';
 import 'package:flutter_application_1/wallet/wallet.dart';
 
 class editWallet extends StatefulWidget {
@@ -31,43 +34,66 @@ class _editWalletState extends State<editWallet> {
 
   final formKeyyy = GlobalKey<FormState>();
   bool _obscuretext = true;
+
+  //---------------Reef 13/01-----------------
+  String generatePassword2() {
+    String capital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    String small = "abcdefghijklmnopqrstuvwxyz";
+    String numbers = "1234567890";
+    String specialChar = "}{[]@#!^&*()-=+_.,;:";
+    String paaswordString = "$capital$small$numbers$specialChar";
+    return List.generate(20, (index) {
+      int randomIndex = Random.secure().nextInt(paaswordString.length);
+      return paaswordString[randomIndex];
+    }).join();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Color(0xFF141416),
-        body: Form(
-          key: formKeyyy,
-          child: Center(
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('Edit password',
-                      style: TextStyle(
-                        color: Color(0xfff8fafc),
-                        fontSize: 26,
-                        fontFamily: "Inter",
-                        fontWeight: FontWeight.w700,
-                      )),
-                  SizedBox(height: 12),
-                  Container(
-                      width: 450,
-                      height: 400,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Color(0xff1b1b1e),
-                      ),
-                      padding: const EdgeInsets.only(
-                        left: 18,
-                        right: 32,
-                        top: 25,
-                        bottom: 10,
-                      ),
-                      child: _buildQuestionForm()),
-                ]),
-          ),
-        ));
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode cuurentFocus = FocusScope.of(context);
+        if (!cuurentFocus.hasPrimaryFocus) {
+          cuurentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+          backgroundColor: Color(0xFF141416),
+          body: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: formKeyyy,
+            child: Center(
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('Edit password',
+                        style: TextStyle(
+                          color: Color(0xfff8fafc),
+                          fontSize: 26,
+                          fontFamily: "Inter",
+                          fontWeight: FontWeight.w700,
+                        )),
+                    SizedBox(height: 12),
+                    Container(
+                        width: 450,
+                        height: 470,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Color(0xff1b1b1e),
+                        ),
+                        padding: const EdgeInsets.only(
+                          left: 18,
+                          right: 32,
+                          top: 25,
+                          bottom: 10,
+                        ),
+                        child: _buildQuestionForm()),
+                  ]),
+            ),
+          )),
+    );
   }
 
   Widget _buildQuestionForm() {
@@ -98,38 +124,44 @@ class _editWalletState extends State<editWallet> {
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
             ),
-            child: SizedBox(
-              width: 360,
-              height: 55,
-              child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'This field is required';
-                  },
-                  controller: _platformController,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(" "),
-                  ],
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                  decoration: InputDecoration(
-                    // errorBorder:OutlineInputBorder(borderRadius: BorderRadius.circular(12),
-                    //   borderSide: BorderSide(
-                    //     color: Colors.redAccent,
-                    //     width: 1.5,
-                    //   ),
-                    // ) ,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Color(0xff616161),
-                        width: 1.5,
-                      ),
+            child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty)
+                    return 'This field is required';
+                },
+                controller: _platformController,
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(" "),
+                ],
+                style: TextStyle(color: Colors.white, fontSize: 18),
+                decoration: InputDecoration(
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Color(0xFFEA0707),
+                      width: 1.5,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Color(0xFF8A70BE))),
-                  )),
-            ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Color(0xFFEA0707),
+                      width: 1.5,
+                    ),
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 1.0, horizontal: 11),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Color(0xff616161),
+                      width: 1.5,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Color(0xFF8A70BE))),
+                )),
           ),
           SizedBox(
             height: 12,
@@ -154,31 +186,43 @@ class _editWalletState extends State<editWallet> {
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
             ),
-            child: SizedBox(
-              width: 360,
-              height: 55,
-              child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'This field is required';
-                  },
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(" "),
-                  ],
-                  controller: _usernameController,
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xff616161),
-                          width: 1.5,
-                        ),
+            child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty)
+                    return 'This field is required';
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(" "),
+                ],
+                controller: _usernameController,
+                style: TextStyle(color: Colors.white, fontSize: 18),
+                decoration: InputDecoration(
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Color(0xFFEA0707),
+                        width: 1.5,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Color(0xFF8A70BE))))),
-            ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Color(0xFFEA0707),
+                        width: 1.5,
+                      ),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 1.0, horizontal: 11),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Color(0xff616161),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Color(0xFF8A70BE))))),
           ),
           SizedBox(
             height: 12,
@@ -203,45 +247,79 @@ class _editWalletState extends State<editWallet> {
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
             ),
-            child: SizedBox(
-              width: 360,
-              height: 55,
-              child: TextFormField(
-                  obscureText: _obscuretext,
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'This field is required';
-                  },
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(" "),
-                  ],
-                  controller: _passwordController,
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                  decoration: InputDecoration(
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {});
-                          _obscuretext = !_obscuretext;
-                        },
-                        child: Icon(
-                          _obscuretext
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Color(0xff616161),
-                          size: 20,
-                        ),
+            child: TextFormField(
+                obscureText: _obscuretext,
+                validator: (value) {
+                  if (value == null || value.isEmpty)
+                    return 'This field is required';
+                },
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(" "),
+                ],
+                controller: _passwordController,
+                style: TextStyle(color: Colors.white, fontSize: 18),
+                decoration: InputDecoration(
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Color(0xFFEA0707),
+                        width: 1.5,
                       ),
-                      enabledBorder: OutlineInputBorder(
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Color(0xFFEA0707),
+                        width: 1.5,
+                      ),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 1.0, horizontal: 11),
+                    suffixIcon: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _passwordController!.text = generatePassword2();
+                            setState(() {});
+                          },
+                          child: Icon(
+                            Icons.vpn_key_outlined,
+                            color: Color(0xFF8A70BE),
+                            size: 27,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {});
+                            _obscuretext = !_obscuretext;
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Icon(
+                              _obscuretext
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Color(0xff616161),
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Color(0xff616161),
+                        width: 1.5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xff616161),
-                          width: 1.5,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Color(0xFF8A70BE))))),
-            ),
+                        borderSide: BorderSide(color: Color(0xFF8A70BE))))),
           ),
           SizedBox(
             height: 36,

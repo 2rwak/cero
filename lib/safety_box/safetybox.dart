@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:flutter_application_1/safety_box/Files/files.dart';
-import 'package:flutter_application_1/safety_box/creditCard/creditcard.dart';
+import 'package:flutter_application_1/safety_box/creditCard/creditCard.dart';
 
 class safetybox extends StatefulWidget {
   const safetybox({super.key});
@@ -10,6 +11,8 @@ class safetybox extends StatefulWidget {
 }
 
 class _safetyboxState extends State<safetybox> {
+  final String userid = fireStore_helper.getUID();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +38,11 @@ class _safetyboxState extends State<safetybox> {
             InkWell(
               onTap: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => creditCard()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => creditCard(
+                              Currentusername: userid,
+                            )));
               },
               child: Container(
                 width: 360,
@@ -75,7 +82,11 @@ class _safetyboxState extends State<safetybox> {
             InkWell(
               onTap: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => files()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => files(
+                              Currentusername: userid,
+                            )));
               },
               child: Container(
                 width: 360,

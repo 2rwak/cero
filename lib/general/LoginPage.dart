@@ -6,7 +6,7 @@ import 'package:flutter_application_1/general/signUp.dart';
 import 'package:flutter_application_1/general/localAuth.dart';
 
 import 'package:flutter_application_1/general/LoginPageOTP.dart';
-
+import 'package:device_info/device_info.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -16,6 +16,12 @@ import 'package:flutter_application_1/email_alert/Location.dart';
 import 'package:flutter_application_1/email_alert/time.dart';
 import 'package:flutter_application_1/email_alert/device_type.dart';
 import 'package:flutter_application_1/email_alert/mailer.dart';
+import 'package:flutter_application_1/wallet/wallet.dart';
+
+import '../Models/historyModel.dart';
+import '../local_notification_serivce.dart';
+import '../notification/local_notice_service.dart';
+
 //
 
 class LoginPage extends StatefulWidget {
@@ -25,7 +31,31 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late final LocalNotificationService service;
+  void initState() {
+    service = LocalNotificationService();
+    super.initState();
+  }
+
   get children => null;
+
+  // new ============================
+  String signIndevice = '';
+  String hasdevice = '';
+  final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+  @override
+  Future getUserdevice(String username) async {
+    var data = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(username)
+        .get();
+
+    Map<String, dynamic>? user_data = data.data();
+    hasdevice = user_data!['SetUpdevice'];
+    print('SetUpdevice' + hasdevice);
+    return hasdevice;
+  }
+//==================================
 
 // Arwa 22/12
   TextEditingController userNameController = TextEditingController();
@@ -75,6 +105,19 @@ class _LoginPageState extends State<LoginPage> {
         .doc('login')
         .set(login_history)
         .onError((e, _) => print("Error writing document: $e"));
+
+    final newHistory = historyModel(
+      device: device_obj.deviceInfo,
+      location: location_obj.address,
+      time: time_obj.time_now,
+    ).toJson();
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userNameController.text)
+        .collection('History')
+        .doc(time_obj.time_now)
+        .set(newHistory);
   }
 
 // ------------------------------------------------------------------
@@ -276,13 +319,53 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 35),
                 Center(
                     child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => navigationBar(
-                                  Currentusername: userNameController.text,
-                                )));
+                  // onTap: () {
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (_) => navigationBar(
+                  //                 Currentusername: userNameController.text,
+                  //               )));
+                  // },
+                  onTap: () async {
+                    var data = await deviceInfoPlugin.iosInfo;
+
+                    var deviceName = data.name;
+                    var deviceVersion = data.systemVersion;
+                    var identifier = data.identifierForVendor;
+                    signIndevice =
+                        deviceName + " " + deviceVersion + " " + identifier;
+                    getUserdevice(userNameController.text);
+                    bool isUserValid =
+                        await usernameCheck(userNameController.text);
+                    if (isUserValid) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Username does not exist'),
+                        ),
+                      );
+                    } else {
+                      bool isAuthenticated = await LocalAuth.authenticate();
+                      if (signIndevice == hasdevice) {
+                        if (isAuthenticated) {
+                          await signIn();
+                          _autoLogoutService.startNewTimer(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => navigationBar(
+                                        Currentusername:
+                                            userNameController.text,
+                                      )));
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Authentication failed.'),
+                          ),
+                        );
+                      }
+                    }
                   },
                   child: Container(
                     height: 50,
@@ -293,37 +376,44 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: Center(
                       child: GestureDetector(
-                        onTap: () async {
-                          bool isUserValid =
-                              await usernameCheck(userNameController.text);
-                          if (isUserValid) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Username does not exist'),
-                              ),
-                            );
-                          } else {
-                            bool isAuthenticated =
-                                await LocalAuth.authenticate();
-                            if (isAuthenticated) {
-                              await signIn();
-                              _autoLogoutService.startNewTimer(context);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => navigationBar(
-                                            Currentusername:
-                                                userNameController.text,
-                                          )));
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Authentication failed.'),
-                                ),
-                              );
-                            }
-                          }
-                        },
+                        // onTap: () async {
+                        //   bool isUserValid =
+                        //       await usernameCheck(userNameController.text);
+                        //   if (isUserValid) {
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //       const SnackBar(
+                        //         content: Text('Username does not exist'),
+                        //       ),
+                        //     );
+                        //   } else {
+                        //     bool isAuthenticated =
+                        //         await LocalAuth.authenticate();
+                        //     if (isAuthenticated) {
+                        //       await signIn();
+                        //         // 6 /1 ARWA Notification
+                        //       await LocalNoticeService().addNotification(
+                        //         'Logged in',
+                        //         'Welcome Back!',
+                        //         DateTime.now().millisecondsSinceEpoch + 1000,
+                        //         channel: 'testing',
+                        //       );
+                        //       _autoLogoutService.startNewTimer(context);
+                        //       Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //               builder: (_) => navigationBar(
+                        //                     Currentusername:
+                        //                         userNameController.text,
+                        //                   )));
+                        //     } else {
+                        //       ScaffoldMessenger.of(context).showSnackBar(
+                        //         const SnackBar(
+                        //           content: Text('Authentication failed.'),
+                        //         ),
+                        //       );
+                        //     }
+                        //   }
+                        // },
                         // onTap: () async {
                         //   final authenticate = await LocalAuth.authenticate();
                         // },

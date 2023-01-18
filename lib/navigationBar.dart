@@ -31,22 +31,26 @@ class _navigationBarState extends State<navigationBar> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
-          backgroundColor: Color(0xFF0F0C07),
+          activeColor: Color(0xFF8A70BE),
+          inactiveColor: Color(0xFF4E5053), backgroundColor: Color(0xFF0F0C07),
 
           iconSize: 30,
-          items: const <BottomNavigationBarItem>[
+          items: [
             BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.vpn_key_outlined,
-                  color: Color(0xFF4E5053),
-                ),
-                activeIcon:
-                    Icon(Icons.vpn_key_outlined, color: Color(0xFF8A70BE))),
+              icon: Icon(
+                Icons.vpn_key_outlined,
+                color: Color(0xFF4E5053),
+              ),
+              activeIcon:
+                  Icon(Icons.vpn_key_outlined, color: Color(0xFF8A70BE)),
+              label: "Passwords",
+            ),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.lock_outlined,
                   color: Color(0xFF4E5053),
                 ),
+                label: "Safety box",
                 activeIcon: Icon(
                   Icons.lock_outlined,
                   color: Color(0xFF8A70BE),
@@ -59,8 +63,10 @@ class _navigationBarState extends State<navigationBar> {
                 activeIcon: Icon(
                   Icons.perm_identity,
                   color: Color(0xFF8A70BE),
-                )),
+                ),
+                label: "Profile"),
           ],
+
           // currentIndex: _selectedIndex,
           // onTap: _onItemTap),
         ),

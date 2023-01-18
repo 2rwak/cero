@@ -1,47 +1,26 @@
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/Models/passwords.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/Models/labels.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
-import 'package:flutter_application_1/navigationBar.dart';
-import 'package:flutter_application_1/wallet/wallet.dart';
+import 'package:flutter_application_1/safety_box/Files/files.dart';
+import '../../../navigationBar.dart';
 
-class addToWallet extends StatefulWidget {
+class AddLabel extends StatefulWidget {
   final String current;
-
-  const addToWallet({super.key, required this.current});
+  const AddLabel({super.key, required this.current});
 
   @override
-  State<addToWallet> createState() => _addToWalletState();
-
-  
+  State<AddLabel> createState() => _AddLabelState();
 }
 
-class _addToWalletState extends State<addToWallet> {
-  TextEditingController _platformController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  passwords _pass = passwords();
-  _addToWalletState({Key? key});
-
+class _AddLabelState extends State<AddLabel> {
   final formKeyy = GlobalKey<FormState>();
-  bool _obscuretext = true;
-  static const List<String> suggestions = ["Suggest a strong password"];
+  TextEditingController _LabelnameController = TextEditingController();
 
-  //-----------Reef 14/01----------
- String generatePassword() {
-    String capital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    String small = "abcdefghijklmnopqrstuvwxyz";
-    String numbers = "1234567890";
-    String specialChar = "}{[]@#!^&*()-=+_.,;:";
-    String paaswordString = "$capital$small$numbers$specialChar";
-    return List.generate(20, (index) {
-      int randomIndex = Random.secure().nextInt(paaswordString.length);
-      return paaswordString[randomIndex];
-    }).join();
-  }
+  labels _lab = labels();
+  int selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +42,7 @@ class _addToWalletState extends State<addToWallet> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('Add password',
+                    Text('Add label',
                         style: TextStyle(
                           color: Color(0xfff8fafc),
                           fontSize: 26,
@@ -73,7 +52,7 @@ class _addToWalletState extends State<addToWallet> {
                     SizedBox(height: 12),
                     Container(
                         width: 450,
-                        height: 470,
+                        height: 310,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
                           color: Color(0xff1b1b1e),
@@ -84,14 +63,14 @@ class _addToWalletState extends State<addToWallet> {
                           top: 25,
                           bottom: 10,
                         ),
-                        child: _buildQuestionForm()),
+                        child: _buildQuestionFormL()),
                   ]),
             ),
           )),
     );
   }
 
-  Widget _buildQuestionForm() {
+  Widget _buildQuestionFormL() {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -102,7 +81,7 @@ class _addToWalletState extends State<addToWallet> {
           Row(
             children: [
               Text(
-                '   Platform',
+                '   Label title',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
               Text(' *',
@@ -126,7 +105,7 @@ class _addToWalletState extends State<addToWallet> {
                   else
                     return null;
                 },
-                controller: _platformController,
+                controller: _LabelnameController,
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(" "),
                 ],
@@ -166,7 +145,7 @@ class _addToWalletState extends State<addToWallet> {
           Row(
             children: [
               Text(
-                '   UserName',
+                '   Label Color',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
               Text(' *',
@@ -180,148 +159,19 @@ class _addToWalletState extends State<addToWallet> {
             height: 7,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty)
-                    return 'This field is required';
-                  else
-                    return null;
-                },
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(" "),
-                ],
-                controller: _usernameController,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-                decoration: InputDecoration(
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Color(0xFFEA0707),
-                        width: 1.5,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Color(0xFFEA0707),
-                        width: 1.5,
-                      ),
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 1.0, horizontal: 11),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Color(0xff616161),
-                        width: 1.5,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Color(0xFF8A70BE))))),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Row(
-            children: [
-              Text(
-                '   Password',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
               ),
-              Text(' *',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFFEA0707),
-                  ))
-            ],
-          ),
-          SizedBox(
-            height: 7,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: TextFormField(
-                obscureText: _obscuretext,
-                validator: (value) {
-                  if (value == null || value.isEmpty)
-                    return 'This field is required';
-                  else
-                    return null;
+              child: FormField(
+                builder: (FormFieldState<dynamic> field) {
+                  return _labelColors();
                 },
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(" "),
-                ],
-                controller: _passwordController,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-                decoration: InputDecoration(
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Color(0xFFEA0707),
-                        width: 1.5,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Color(0xFFEA0707),
-                        width: 1.5,
-                      ),
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 1.0, horizontal: 11),
-                    suffixIcon: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _passwordController.text = generatePassword();
-                            setState(() {});
-                          },
-                          child: Icon(
-                            Icons.vpn_key_outlined,
-                            color: Color(0xFF8A70BE),
-                            size: 27,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {});
-                            _obscuretext = !_obscuretext;
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Icon(
-                              _obscuretext
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Color(0xff616161),
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Color(0xff616161),
-                        width: 1.5,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Color(0xFF8A70BE))))),
-          ),
+                validator: (value) {
+                  if (selectedIndex == -1 || value == null)
+                    return "Please select color";
+                  return null;
+                },
+              )),
           SizedBox(
             height: 36,
           ),
@@ -329,9 +179,7 @@ class _addToWalletState extends State<addToWallet> {
             Center(
                 child: InkWell(
               onTap: () {
-                if (_platformController.text.isNotEmpty ||
-                    _usernameController.text.isNotEmpty ||
-                    _passwordController.text.isNotEmpty)
+                if (_LabelnameController.text.isNotEmpty)
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -431,7 +279,7 @@ class _addToWalletState extends State<addToWallet> {
                   onPressed: () {
                     final isValid = formKeyy.currentState?.validate();
                     if (isValid == true) {
-                      adding();
+                      addingL();
                     }
                   },
                   child: Center(
@@ -450,32 +298,59 @@ class _addToWalletState extends State<addToWallet> {
             )),
           ])
         ]);
-    // );
   }
 
-  void adding() async {
+  List<Color> c = [
+    Color(0xFFFF4D4D),
+    Color(0xFFFE965C),
+    Color(0xFFFFF066),
+    Color(0xFF4BF15C),
+    Color(0xFF3E67CF)
+  ];
+
+  void addingL() async {
     setState(() {});
-    _pass.platform = _platformController.text;
-    _pass.username = _usernameController.text;
-    _pass.password = _passwordController.text;
+    _lab.labelName = _LabelnameController.text;
+    _lab.LabelColor = c[selectedIndex].toString();
 
     fireStore_helper.setUID(widget.current);
 
-    fireStore_helper.create(passwords(
-        platform: _pass.platform,
-        username: _pass.username,
-        password: _pass.password));
-    // await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc('Kbayxiiu2qgCHVFVpMud')
-    //     .collection('passwordsswallet')
-    //     .add(_pass.toJson());
-
+    fireStore_helper.createLabel(labels(
+      labelName: _lab.labelName,
+      LabelColor: _lab.LabelColor,
+    ));
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) => wallet(
+            builder: (_) => files(
                   Currentusername: widget.current,
                 )));
+  }
+
+  _labelColors() {
+    return Wrap(
+      direction: Axis.horizontal,
+      children: List.generate(5, (index) {
+        return InkWell(
+          onTap: () {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+          child: Container(
+            width: 50,
+            height: 42,
+            margin: const EdgeInsets.only(right: 7),
+            decoration: BoxDecoration(
+              border: selectedIndex == index
+                  ? Border.all(color: Colors.white, width: 3)
+                  : Border.all(),
+              borderRadius: BorderRadius.circular(5),
+              color: c[index],
+            ),
+          ),
+        );
+      }),
+    );
   }
 }

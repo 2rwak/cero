@@ -42,7 +42,7 @@ class _splashScreenState extends State<splashScreen> {
                   fontSize: 42,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
-                  fontFamily: "Cairo",
+                  fontFamily: "Inter",
                 ),
               )
             ]),

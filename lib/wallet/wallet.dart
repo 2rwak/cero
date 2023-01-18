@@ -285,63 +285,42 @@ class _walletState extends State<wallet> {
                                               size: 20,
                                             ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 88),
-                                            child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                  Color(0xFF8A70BE),
-                                                ),
-                                                shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12))),
-                                              ),
-                                              onPressed: () {
-                                                fireStore_helper.setUID(
-                                                    widget.Currentusername);
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => editWallet(
-                                                            pass: passwords(
-                                                                platform:
-                                                                    singlePass
-                                                                        .platform,
-                                                                username:
-                                                                    singlePass
-                                                                        .username,
-                                                                password:
-                                                                    singlePass
-                                                                        .password,
-                                                                passId:
-                                                                    singlePass
-                                                                        .passId),
-                                                            toEdit: widget
-                                                                .Currentusername)));
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  'Edit',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14,
-                                                    fontFamily: 'Inter',
-                                                  ),
-                                                ),
-                                              ),
+                                          SizedBox(
+                                            width: 100,
+                                          ),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.edit_outlined,
+                                              color: Color.fromARGB(
+                                                  255, 143, 146, 151),
+                                              size: 32,
                                             ),
+                                            onPressed: () {
+                                              fireStore_helper.setUID(
+                                                  widget.Currentusername);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => editWallet(
+                                                          pass: passwords(
+                                                              platform:
+                                                                  singlePass
+                                                                      .platform,
+                                                              username:
+                                                                  singlePass
+                                                                      .username,
+                                                              password:
+                                                                  singlePass
+                                                                      .password,
+                                                              passId: singlePass
+                                                                  .passId),
+                                                          toEdit: widget
+                                                              .Currentusername)));
+                                            },
                                           ),
 
                                           //delete
-                                          SizedBox(
-                                            width: 0.1,
-                                          ),
+
                                           IconButton(
                                               icon: Icon(
                                                 Icons.delete_outlined,
@@ -578,57 +557,38 @@ class _walletState extends State<wallet> {
                                               size: 20,
                                             ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 88),
-                                            child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                  Color(0xFF8A70BE),
-                                                ),
-                                                shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12))),
-                                              ),
-                                              onPressed: () {
-                                                fireStore_helper.setUID(
-                                                    widget.Currentusername);
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => editWallet(
-                                                            pass: passwords(
-                                                                platform:
-                                                                    singlePass
-                                                                        .platform,
-                                                                username:
-                                                                    singlePass
-                                                                        .username,
-                                                                password:
-                                                                    singlePass
-                                                                        .password,
-                                                                passId:
-                                                                    singlePass
-                                                                        .passId),
-                                                            toEdit: widget
-                                                                .Currentusername)));
-                                              },
-                                              child: Center(
-                                                child: Text(
-                                                  'Edit',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14,
-                                                    fontFamily: 'Inter',
-                                                  ),
-                                                ),
-                                              ),
+                                          SizedBox(
+                                            width: 100,
+                                          ),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.edit_outlined,
+                                              color: Color.fromARGB(
+                                                  255, 143, 146, 151),
+                                              size: 32,
                                             ),
+                                            onPressed: () {
+                                              fireStore_helper.setUID(
+                                                  widget.Currentusername);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => editWallet(
+                                                          pass: passwords(
+                                                              platform:
+                                                                  singlePass
+                                                                      .platform,
+                                                              username:
+                                                                  singlePass
+                                                                      .username,
+                                                              password:
+                                                                  singlePass
+                                                                      .password,
+                                                              passId: singlePass
+                                                                  .passId),
+                                                          toEdit: widget
+                                                              .Currentusername)));
+                                            },
                                           ),
 
                                           //delete

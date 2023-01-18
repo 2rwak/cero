@@ -10,6 +10,7 @@ import 'package:flutter_application_1/email_alert/Location.dart';
 import 'package:flutter_application_1/email_alert/time.dart';
 import 'package:flutter_application_1/email_alert/device_type.dart';
 import 'package:flutter_application_1/email_alert/mailer.dart';
+import 'package:flutter_application_1/wallet/wallet.dart';
 
 // import 'package:flutter/fluttertoast/fluttertoast.dart';
 import 'LoginPage.dart';
@@ -125,7 +126,7 @@ class _LoginPageOTPState extends State<LoginPageOTP> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => navigationBar(
+                  builder: (_) => wallet(
                         Currentusername: usernameController.text, 
                       )));
         } else {

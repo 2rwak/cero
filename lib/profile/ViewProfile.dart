@@ -1,3 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:io';
+
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Models/users.dart';
@@ -8,6 +13,8 @@ import 'package:flutter_application_1/profile/loginHistory.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:get/route_manager.dart';
+// import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ViewProfile extends StatefulWidget {
   final String who;
@@ -17,31 +24,34 @@ class ViewProfile extends StatefulWidget {
   State<ViewProfile> createState() => _ViewProfileState();
 }
 
+String data = "";
+
+final TextEditingController emailController = new TextEditingController();
+
+void share(BuildContext context) async {
+  await Share.share(
+    data,
+  );
+}
+
 openDialogueBox(BuildContext context) {
   return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Are you sure you want to log out of Cero?'),
+          backgroundColor: Color(0xFF141416),
+          title: Text(
+            'Are you sure you want to log out of Cero?',
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
           content: SizedBox(
             width: 50,
           ),
           actions: [
             TextButton(
-              onPressed: () async {
-                submitAction(context);
-              },
-              child: Text(
-                'Log Out',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 195, 7, 7),
-                  fontSize: 18,
-                  fontFamily: 'Inter',
-                ),
-              ),
-            ),
-            TextButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Color(0xFF4E5053))),
               onPressed: () {
                 if (Navigator.canPop(context)) {
                   Navigator.pop(context);
@@ -52,12 +62,31 @@ openDialogueBox(BuildContext context) {
                 'Cancel',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color.fromARGB(255, 1, 1, 1),
-                  fontSize: 18,
+                  color: Colors.white,
+                  fontSize: 14,
                   fontFamily: 'Inter',
                 ),
               ),
-            )
+            ),
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  Color(0xFFEC1F1F),
+                ),
+              ),
+              onPressed: () async {
+                submitAction(context);
+              },
+              child: Text(
+                'Log Out',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Inter',
+                ),
+              ),
+            ),
           ],
         );
       });
@@ -158,7 +187,7 @@ class _ViewProfileState extends State<ViewProfile> {
         ),
         Container(
           width: 450,
-          height: 410,
+          height: 440,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             color: Color(0xff1b1b1e),
@@ -242,13 +271,13 @@ class _ViewProfileState extends State<ViewProfile> {
                   style: TextStyle(color: Color(0xFFB0B0B0), fontSize: 16),
                 ),
                 SizedBox(
-                  height: 70,
+                  height: 50,
                   width: 20,
                 ),
                 Row(
                   children: [
                     SizedBox(
-                      width: 35,
+                      width: 28,
                     ),
                     InkWell(
                       onTap: () {
@@ -265,24 +294,36 @@ class _ViewProfileState extends State<ViewProfile> {
                       },
                       child: Container(
                           height: 40,
-                          width: 110,
+                          width: 125,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Color(0xFF8A70BE),
                           ),
                           child: Center(
-                              child: Text(
-                            'Edit',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 19,
-                              fontFamily: 'Inter',
-                            ),
+                              child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Icon(
+                                  Icons.edit_outlined,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                              ),
+                              Text(
+                                'Edit',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 19,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ))),
                     ),
                     SizedBox(
-                      width: 60,
+                      width: 40,
                     ),
                     InkWell(
                       onTap: () {
@@ -347,23 +388,191 @@ class _ViewProfileState extends State<ViewProfile> {
                       },
                       child: Container(
                           height: 40,
-                          width: 110,
+                          width: 125,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Color(0xFFA11E1E),
                           ),
                           child: Center(
-                              child: Text(
-                            'Delete',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 19,
-                              fontFamily: 'Inter',
-                            ),
+                              child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Icon(
+                                  Icons.delete_outlined,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                              ),
+                              Text(
+                                'Delete',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 19,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ))),
                     )
                   ],
+                ),
+                SizedBox(
+                  height: 18,
+                ),
+                InkWell(
+                  ////////////////////////////////////////
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Center(
+                            child: AlertDialog(
+                              actionsAlignment: MainAxisAlignment.center,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0)),
+                              backgroundColor: Color(0xFF141416),
+                              content: Container(
+                                height: 250,
+                                child: Column(
+                                  children: [
+                                    //QR code
+                                    Container(
+                                      child: BarcodeWidget(
+                                        data: username1,
+                                        barcode: Barcode.qrCode(),
+                                        color: Color(0xFF8A70BE),
+                                        height: 250,
+                                        width: 250,
+                                        backgroundColor:
+                                            Color.fromARGB(255, 16, 15, 15),
+                                      ),
+                                      // decoration: BoxDecoration(
+                                      //   borderRadius: BorderRadius.circular(25),
+                                      //   color: Colors.white,
+                                      // ),
+                                      height: 120,
+                                      width: 120,
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text('User name ',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      username1,
+                                      style: TextStyle(
+                                          color: Color(0xFFB0B0B0),
+                                          fontSize: 15),
+                                    ),
+                                    SizedBox(
+                                      height: 17,
+                                    ),
+                                    Text('Email ',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      email1,
+                                      style: TextStyle(
+                                          color: Color(0xFFB0B0B0),
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF4E5053),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+
+                                        // <-- Radius
+                                      ),
+                                    ),
+
+                                    //share code here
+                                    onPressed: () {
+                                      data =
+                                          "Scan QR code to add me or use: \n Username: \n" +
+                                              username1 +
+                                              "\n email: \n" +
+                                              email1;
+                                      share(context);
+                                    },
+                                    child: Container(
+                                      width: 150,
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 20),
+                                            child: Icon(
+                                              Icons.ios_share_outlined,
+                                              color: Color.fromARGB(
+                                                  255, 248, 247, 247),
+                                              size: 25,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 6,
+                                          ),
+                                          Text('Share',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20)),
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          );
+                        });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 27),
+                    child: Container(
+                        height: 40,
+                        width: 295,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(9),
+                          color: Color(0xFF8A70BE),
+                        ),
+                        child: Center(
+                            child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 100),
+                              child: Icon(
+                                Icons.ios_share_outlined,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                            ),
+                            Text(
+                              'Share',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 19,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ))),
+                  ),
                 ),
               ]),
         ),
