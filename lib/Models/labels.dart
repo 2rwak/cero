@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class labels {
   String? labId;
   String? labelName;
-  String? LabelColor;
+  int LabelColor;
 
-  labels({this.labelName, this.LabelColor, this.labId});
+  labels({this.labelName, required this.LabelColor, this.labId});
 
   factory labels.fromSnapshot(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;

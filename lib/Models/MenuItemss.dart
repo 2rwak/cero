@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class MenuItemss {
   final String text;
   final IconData icon;
+  final int color;
 
-  const MenuItemss({required this.text, required this.icon});
+  const MenuItemss({required this.text, required this.icon, required this.color});
 }

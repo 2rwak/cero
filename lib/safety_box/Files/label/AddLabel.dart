@@ -19,7 +19,7 @@ class _AddLabelState extends State<AddLabel> {
   final formKeyy = GlobalKey<FormState>();
   TextEditingController _LabelnameController = TextEditingController();
 
-  labels _lab = labels();
+  labels _lab = labels(LabelColor: 0);
   int selectedIndex = -1;
 
   @override
@@ -277,10 +277,10 @@ class _AddLabelState extends State<AddLabel> {
                             borderRadius: BorderRadius.circular(12))),
                   ),
                   onPressed: () {
-                    final isValid = formKeyy.currentState?.validate();
-                    if (isValid == true) {
-                      addingL();
-                    }
+                    // final isValid = formKeyy.currentState?.validate();
+                    // if (isValid == true) {
+                    addingL();
+                    // }
                   },
                   child: Center(
                     child: Text(
@@ -311,7 +311,7 @@ class _AddLabelState extends State<AddLabel> {
   void addingL() async {
     setState(() {});
     _lab.labelName = _LabelnameController.text;
-    _lab.LabelColor = c[selectedIndex].toString();
+    _lab.LabelColor = c[selectedIndex].value;
 
     fireStore_helper.setUID(widget.current);
 

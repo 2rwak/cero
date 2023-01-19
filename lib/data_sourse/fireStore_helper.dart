@@ -237,6 +237,17 @@ class fireStore_helper {
     await docRef.set(newLabel);
   }
 
+  static Stream<List<labels>> retrieveLabels() {
+    final labelsColl = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentOne)
+        .collection('Labels')
+        .orderBy('labelName', descending: false);
+
+    return labelsColl.snapshots().map((querySnapshot) =>
+        querySnapshot.docs.map((e) => labels.fromSnapshot(e)).toList());
+  }
+
   static Future deleteFile(String fid) async {
     final FileCollection = FirebaseFirestore.instance
         .collection('users')

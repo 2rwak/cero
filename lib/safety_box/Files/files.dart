@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/Models/MenuItemss.dart';
+import 'package:flutter_application_1/Models/labels.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:flutter_application_1/safety_box/Files/label/AddLAbel.dart';
 import 'package:flutter_application_1/safety_box/Files/label/labelMenu.dart';
@@ -120,7 +121,7 @@ class _filesState extends State<files> with TickerProviderStateMixin {
             children: [
               Icon(
                 item.icon,
-                color: Color(0xFF8A70BE),
+                color: Color(item.color),
                 size: 35,
               ),
               const SizedBox(
@@ -135,6 +136,21 @@ class _filesState extends State<files> with TickerProviderStateMixin {
               ),
             ],
           ));
+
+  PopupMenuItem<MenuItemss> buildItem2(MenuItemss item) =>
+      PopupMenuItem<MenuItemss>(
+        value: item,
+        child: Row(children: [
+          Icon(Icons.circle, color: Color(item.color), size: 30),
+          SizedBox(
+            width: 2,
+          ),
+          Text(
+            item.text,
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          )
+        ]),
+      );
   //---------------Reef 13/01--------------------------
   onSelected(BuildContext context, MenuItemss item) {
     switch (item) {
@@ -263,13 +279,16 @@ class _filesState extends State<files> with TickerProviderStateMixin {
                                     ),
                                     color: Color(0xFF0F0C07),
                                     itemBuilder: (context) => [
+
                                       ...labelMenu.itemsSecond
                                           .map(buildItem)
                                           .toList(),
                                     ],
                                   )),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                   
+                                  },
                                   icon: Icon(
                                     Icons.sort_outlined,
                                     color: Color(0xFF8A70BE),
@@ -331,9 +350,7 @@ class _filesState extends State<files> with TickerProviderStateMixin {
                                                 color: Color(0xFF8A70BE),
                                                 size: 30,
                                               ),
-                                              onPressed: () {
-                                                //here
-                                              },
+                                              onPressed: () {},
                                             ),
                                             IconButton(
                                                 icon: Icon(
