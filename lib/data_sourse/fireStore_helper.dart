@@ -125,10 +125,9 @@ class fireStore_helper {
     final docRef = filesCollection.doc();
     final fid = docRef.id;
 
-    final newFile = filesModel(
-      fileName: file.fileName,
-      fileId: fid,
-    ).toJson();
+    final newFile =
+        filesModel(fileName: file.fileName, fileId: fid, fileColor: 0xFF8A70BE)
+            .toJson();
 
     await docRef.set(newFile);
   }
@@ -255,5 +254,62 @@ class fireStore_helper {
         .collection('files');
 
     final docRef = FileCollection.doc(fid).delete();
+  }
+
+  static Future updateFileColor(filesModel update) async {
+    final filesCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentOne)
+        .collection('files');
+
+    final docRef = filesCollection.doc(update.fileId);
+
+    final newFile = filesModel(
+            fileName: update.fileName,
+            fileColor: update.fileColor,
+            fileId: update.fileId)
+        .toJson();
+
+    try {
+      await docRef.update(newFile);
+    } catch (e) {
+      print('error');
+    }
+  }
+
+  static Future<bool> emptylabel() async {
+    QuerySnapshot<Map<String, dynamic>> labelsColl = await FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(currentOne)
+        .collection('Labels')
+        .get();
+
+    print("${labelsColl.docs.isEmpty}" + "stream");
+
+    if (labelsColl.docs.isEmpty) return true;
+
+    return false;
+  }
+
+  static Future updatelabels(labels l) async {
+    final creditCardCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentOne)
+        .collection('Labels');
+
+    final docRef7 = creditCardCollection.doc(l.labId);
+
+    final newlab = labels(
+      labelName: l.labelName,
+      LabelColor: l.LabelColor,
+      labId: l.labId,
+    ).toJson();
+
+    try {
+      await docRef7.update(newlab);
+    } catch (e) {
+      print('error');
+    }
   }
 }

@@ -39,7 +39,7 @@ class _editWalletState extends State<editWallet> {
     String capital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     String small = "abcdefghijklmnopqrstuvwxyz";
     String numbers = "1234567890";
-    String specialChar = "}{[]@#!^&*()-=+_.,;:";
+    String specialChar = "[]@#!^&*()-=+_;:";
     String paaswordString = "$capital$small$numbers$specialChar";
     return List.generate(20, (index) {
       int randomIndex = Random.secure().nextInt(paaswordString.length);
@@ -403,6 +403,7 @@ class _editWalletState extends State<editWallet> {
           ])
         ]);
   }
+
   void edit() async {
     fireStore_helper.update(passwords(
         platform: _platformController!.text,

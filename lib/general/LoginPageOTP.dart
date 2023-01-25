@@ -13,6 +13,8 @@ import 'package:flutter_application_1/email_alert/mailer.dart';
 import 'package:flutter_application_1/wallet/wallet.dart';
 
 // import 'package:flutter/fluttertoast/fluttertoast.dart';
+import '../local_notification_serivce.dart';
+import '../notification/local_notice_service.dart';
 import 'LoginPage.dart';
 
 class LoginPageOTP extends StatefulWidget {
@@ -22,6 +24,12 @@ class LoginPageOTP extends StatefulWidget {
 }
 
 class _LoginPageOTPState extends State<LoginPageOTP> {
+  late final LocalNotificationService service;
+  void initState() {
+    service = LocalNotificationService();
+    super.initState();
+  }
+
   // get children => null;
   TextEditingController usernameController = TextEditingController();
   TextEditingController otpController = TextEditingController();
@@ -121,13 +129,21 @@ class _LoginPageOTPState extends State<LoginPageOTP> {
       () async {
         if (user != null) {
           await signIn();
+          print("2BEFORE NOTE");
+          await LocalNoticeService().addNotification(
+            'Logged in',
+            'Welcome Back!',
+            DateTime.now().millisecondsSinceEpoch + 1000,
+            channel: 'testing',
+          );
+          print("2After NOTE");
           _autoLogoutService.startNewTimer(context);
 
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => wallet(
-                        Currentusername: usernameController.text, 
+                  builder: (_) => navigationBar(
+                        Currentusername: usernameController.text,
                       )));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

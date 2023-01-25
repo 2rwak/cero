@@ -148,7 +148,7 @@ class _walletState extends State<wallet> {
                               ),
                               Container(
                                   width: 360,
-                                  height: 160,
+                                  height: 200,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(16),
                                     color: Color(0xff1b1b1e),
@@ -229,28 +229,46 @@ class _walletState extends State<wallet> {
                                               fontSize: 13),
                                           textAlign: TextAlign.start,
                                         ),
-                                        SizedBox(
-                                          height: 9,
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 0),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'Password',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFDADADA)),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                              IconButton(
+                                                onPressed: () {
+                                                  setState(() {});
+                                                  isVisible = !isVisible;
+                                                },
+                                                icon: Icon(
+                                                  isVisible
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off,
+                                                  color: Color(0xff616161),
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        Row(children: [
-                                          Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'Password',
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Color(0xFFDADADA)),
-                                                  textAlign: TextAlign.left,
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Visibility(
-                                                  visible: isVisible,
+                                        SizedBox(
+                                          height: 0,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 0),
+                                          child: Row(
+                                            children: [
+                                              Visibility(
+                                                visible: isVisible,
+                                                child: Expanded(
                                                   child: Text(
                                                     count(singlePass.password
                                                         .toString()
@@ -260,154 +278,154 @@ class _walletState extends State<wallet> {
                                                             Color(0xFFB7B7B7),
                                                         fontSize: 13),
                                                     textAlign: TextAlign.start,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
-                                                  replacement: Text(
+                                                ),
+                                                replacement: Expanded(
+                                                  child: Text(
                                                     '${singlePass.password}',
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xFFB7B7B7),
                                                         fontSize: 13),
                                                     textAlign: TextAlign.start,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
-                                                )
-                                              ]),
-
-                                          IconButton(
-                                            onPressed: () {
-                                              setState(() {});
-                                              isVisible = !isVisible;
-                                            },
-                                            icon: Icon(
-                                              isVisible
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                              color: Color(0xff616161),
-                                              size: 20,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 100,
-                                          ),
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.edit_outlined,
-                                              color: Color.fromARGB(
-                                                  255, 143, 146, 151),
-                                              size: 32,
-                                            ),
-                                            onPressed: () {
-                                              fireStore_helper.setUID(
-                                                  widget.Currentusername);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => editWallet(
-                                                          pass: passwords(
-                                                              platform:
-                                                                  singlePass
-                                                                      .platform,
-                                                              username:
-                                                                  singlePass
-                                                                      .username,
-                                                              password:
-                                                                  singlePass
-                                                                      .password,
-                                                              passId: singlePass
-                                                                  .passId),
-                                                          toEdit: widget
-                                                              .Currentusername)));
-                                            },
-                                          ),
-
-                                          //delete
-
-                                          IconButton(
-                                              icon: Icon(
-                                                Icons.delete_outlined,
-                                                color: Color(0xFFEC1F1F),
-                                                size: 32,
+                                                ),
                                               ),
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return Center(
-                                                        child: AlertDialog(
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          12.0)),
-                                                          backgroundColor:
-                                                              Color(0xFF141416),
-                                                          title: Text(
-                                                            'Delete',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 18),
-                                                          ),
-                                                          content: Text(
-                                                              'Are you sure you want to delete this password ? ',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      16)),
-                                                          actions: [
-                                                            ElevatedButton(
-                                                                style: ButtonStyle(
-                                                                    backgroundColor:
-                                                                        MaterialStateProperty.all(Color(
-                                                                            0xFF4E5053))),
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                child: Text(
-                                                                    'Cancel',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            14))),
-                                                            SizedBox(
-                                                              width: 10,
-                                                            ),
-                                                            ElevatedButton(
-                                                                style:
-                                                                    ButtonStyle(
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty
-                                                                          .all(
-                                                                    Color(
-                                                                        0xFFEC1F1F),
-                                                                  ),
-                                                                ),
-                                                                onPressed: () {
-                                                                  fireStore_helper
-                                                                      .setUID(widget
-                                                                          .Currentusername);
-                                                                  fireStore_helper
-                                                                      .delete(
-                                                                          singlePass);
 
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                child: Text(
-                                                                    'Delete',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            14)))
-                                                          ],
-                                                        ),
-                                                      );
-                                                    });
-                                              })
-                                        ]),
+                                              SizedBox(
+                                                width: 70,
+                                              ),
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.edit_outlined,
+                                                  color: Color.fromARGB(
+                                                      255, 143, 146, 151),
+                                                  size: 32,
+                                                ),
+                                                onPressed: () {
+                                                  fireStore_helper.setUID(
+                                                      widget.Currentusername);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => editWallet(
+                                                              pass: passwords(
+                                                                  platform:
+                                                                      singlePass
+                                                                          .platform,
+                                                                  username:
+                                                                      singlePass
+                                                                          .username,
+                                                                  password:
+                                                                      singlePass
+                                                                          .password,
+                                                                  passId:
+                                                                      singlePass
+                                                                          .passId),
+                                                              toEdit: widget
+                                                                  .Currentusername)));
+                                                },
+                                              ),
+
+                                              //delete
+
+                                              IconButton(
+                                                  icon: Icon(
+                                                    Icons.delete_outlined,
+                                                    color: Color(0xFFEC1F1F),
+                                                    size: 32,
+                                                  ),
+                                                  onPressed: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return Center(
+                                                            child: AlertDialog(
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12.0)),
+                                                              backgroundColor:
+                                                                  Color(
+                                                                      0xFF141416),
+                                                              title: Text(
+                                                                'Delete',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        18),
+                                                              ),
+                                                              content: Text(
+                                                                  'Are you sure you want to delete this password ? ',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16)),
+                                                              actions: [
+                                                                ElevatedButton(
+                                                                    style: ButtonStyle(
+                                                                        backgroundColor:
+                                                                            MaterialStateProperty.all(Color(
+                                                                                0xFF4E5053))),
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                        'Cancel',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize: 14))),
+                                                                SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                                ElevatedButton(
+                                                                    style:
+                                                                        ButtonStyle(
+                                                                      backgroundColor:
+                                                                          MaterialStateProperty
+                                                                              .all(
+                                                                        Color(
+                                                                            0xFFEC1F1F),
+                                                                      ),
+                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      fireStore_helper
+                                                                          .setUID(
+                                                                              widget.Currentusername);
+                                                                      fireStore_helper
+                                                                          .delete(
+                                                                              singlePass);
+
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                        'Delete',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontSize: 14)))
+                                                              ],
+                                                            ),
+                                                          );
+                                                        });
+                                                  }),
+                                            ],
+                                          ),
+                                        ),
                                       ]))
                             ]));
                           } else if (singlePass.platform

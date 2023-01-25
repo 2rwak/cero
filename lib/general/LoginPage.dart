@@ -19,7 +19,6 @@ import 'package:flutter_application_1/email_alert/mailer.dart';
 import 'package:flutter_application_1/wallet/wallet.dart';
 
 import '../Models/historyModel.dart';
-import '../local_notification_serivce.dart';
 import '../notification/local_notice_service.dart';
 
 //
@@ -31,9 +30,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late final LocalNotificationService service;
   void initState() {
-    service = LocalNotificationService();
     super.initState();
   }
 
@@ -346,25 +343,33 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     } else {
                       bool isAuthenticated = await LocalAuth.authenticate();
-                      if (signIndevice == hasdevice) {
-                        if (isAuthenticated) {
-                          await signIn();
-                          _autoLogoutService.startNewTimer(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => navigationBar(
-                                        Currentusername:
-                                            userNameController.text,
-                                      )));
-                        }
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Authentication failed.'),
-                          ),
+                      // if (signIndevice == hasdevice) {
+                      if (isAuthenticated) {
+                        await signIn();
+                        print("1BEFORE NOTE");
+                        await LocalNoticeService().addNotification(
+                          'Logged in',
+                          'Welcome Back!',
+                          DateTime.now().millisecondsSinceEpoch + 1000,
+                          channel: 'testing',
                         );
+                        print("1After NOTE");
+
+                        _autoLogoutService.startNewTimer(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => navigationBar(
+                                      Currentusername: userNameController.text,
+                                    )));
                       }
+                      // } else {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text('Authentication failed.'),
+                      //     ),
+                      //   );
+                      // }
                     }
                   },
                   child: Container(

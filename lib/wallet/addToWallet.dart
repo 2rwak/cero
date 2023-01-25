@@ -15,8 +15,6 @@ class addToWallet extends StatefulWidget {
 
   @override
   State<addToWallet> createState() => _addToWalletState();
-
-  
 }
 
 class _addToWalletState extends State<addToWallet> {
@@ -31,11 +29,11 @@ class _addToWalletState extends State<addToWallet> {
   static const List<String> suggestions = ["Suggest a strong password"];
 
   //-----------Reef 14/01----------
- String generatePassword() {
+  String generatePassword() {
     String capital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     String small = "abcdefghijklmnopqrstuvwxyz";
     String numbers = "1234567890";
-    String specialChar = "}{[]@#!^&*()-=+_.,;:";
+    String specialChar = "}{[]@#!&*()-=+_;:";
     String paaswordString = "$capital$small$numbers$specialChar";
     return List.generate(20, (index) {
       int randomIndex = Random.secure().nextInt(paaswordString.length);

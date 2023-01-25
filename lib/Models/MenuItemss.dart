@@ -5,6 +5,8 @@ class MenuItemss {
   final String text;
   final IconData icon;
   final int color;
+  final String lID;
 
-  const MenuItemss({required this.text, required this.icon, required this.color});
+  const MenuItemss(
+      {required this.text, required this.icon, required this.color,required this.lID});
 }

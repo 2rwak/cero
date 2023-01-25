@@ -9,14 +9,13 @@ import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:flutter_application_1/safety_box/Files/files.dart';
 import '../../../navigationBar.dart';
 
-class AddLabel extends StatefulWidget {
-  // final  MenuItemss menitem;
+class EditLabel extends StatefulWidget {
   final String current;
   final String lname;
   final int lcolor;
   final String lid;
 
-  const AddLabel(
+  const EditLabel(
       {super.key,
       required this.current,
       required this.lname,
@@ -24,15 +23,21 @@ class AddLabel extends StatefulWidget {
       required this.lid});
 
   @override
-  State<AddLabel> createState() => _AddLabelState();
+  State<EditLabel> createState() => _EditLabelState();
 }
 
-class _AddLabelState extends State<AddLabel> {
+class _EditLabelState extends State<EditLabel> {
   final formKeyy = GlobalKey<FormState>();
-  TextEditingController _LabelnameController = TextEditingController();
+  TextEditingController? _LabelnameController;
 
   labels _lab = labels(LabelColor: 0);
   int selectedIndex = -1;
+
+  @override
+  void initState() {
+    _LabelnameController = TextEditingController(text: widget.lname);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +69,7 @@ class _AddLabelState extends State<AddLabel> {
                           size: 30,
                           color: Color(widget.lcolor),
                         ),
-                        Text('Add label\'s title',
+                        Text('Edit label\'s title',
                             style: TextStyle(
                               color: Color(0xfff8fafc),
                               fontSize: 26,
@@ -165,35 +170,6 @@ class _AddLabelState extends State<AddLabel> {
                       borderSide: BorderSide(color: Color(0xFF8A70BE))),
                 )),
           ),
-
-          // Row(
-          //   children: [
-          //     Text(
-          //       '   Label Color',
-          //       style: TextStyle(fontSize: 16, color: Colors.white),
-          //     ),
-          //     Text(' *',
-          //         style: TextStyle(
-          //           fontSize: 20,
-          //           color: Color(0xFFEA0707),
-          //         ))
-          //   ],
-          // ),
-
-          // Padding(
-          //     padding: const EdgeInsets.symmetric(
-          //       horizontal: 16,
-          //     ),
-          //     child: FormField(
-          //       builder: (FormFieldState<dynamic> field) {
-          //         // return _labelColors();
-          //       },
-          // validator: (value) {
-          //   if (selectedIndex == -1 || value == null)
-          //     return "Please select color";
-          //   return null;
-          // },
-          // )),
           SizedBox(
             height: 36,
           ),
@@ -205,7 +181,7 @@ class _AddLabelState extends State<AddLabel> {
               },
               child: Container(
                 height: 41,
-                width: 94,
+                width: 84,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: Color(0xFF4E5053),
@@ -224,7 +200,7 @@ class _AddLabelState extends State<AddLabel> {
               ),
             )),
             SizedBox(
-              width: 80,
+              width: 79,
             ),
             Center(
                 child: InkWell(
@@ -233,7 +209,98 @@ class _AddLabelState extends State<AddLabel> {
               },
               child: SizedBox(
                 height: 41,
-                width: 94,
+                width: 84,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      Color(0xFFEA0707),
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12))),
+                  ),
+                  onPressed: () {
+                    final isValid = formKeyy.currentState?.validate();
+                    if (isValid == true) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(
+                              child: AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0)),
+                                backgroundColor: Color(0xFF141416),
+                                title: Text(
+                                  'Delete',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                content: Text(
+                                    'Are you sure you want to delete label\'s title? ',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16)),
+                                actions: [
+                                  ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Color(0xFF4E5053))),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Cancel',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14))),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          Color(0xFFEC1F1F),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        delL();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Delete',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14)))
+                                ],
+                              ),
+                            );
+                          });
+                    }
+                  },
+                  child: Center(
+                    child: Text(
+                      'Delete',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+            )),
+            SizedBox(
+              width: 9,
+            ),
+            Center(
+                child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: SizedBox(
+                height: 41,
+                width: 84,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
@@ -251,7 +318,7 @@ class _AddLabelState extends State<AddLabel> {
                   },
                   child: Center(
                     child: Text(
-                      'Add',
+                      'Save',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
@@ -272,7 +339,7 @@ class _AddLabelState extends State<AddLabel> {
 
     fireStore_helper.setUID(widget.current);
 
-    _lab.labelName = _LabelnameController.text;
+    _lab.labelName = _LabelnameController!.text;
     _lab.LabelColor = widget.lcolor;
     _lab.labId = widget.lid;
 
@@ -288,30 +355,28 @@ class _AddLabelState extends State<AddLabel> {
                 )));
   }
 
-  // _labelColors() {
-  //   return Wrap(
-  //     direction: Axis.horizontal,
-  //     children: List.generate(5, (index) {
-  //       return InkWell(
-  //         onTap: () {
-  //           setState(() {
-  //             selectedIndex = index;
-  //           });
-  //         },
-  //         child: Container(
-  //           width: 50,
-  //           height: 42,
-  //           margin: const EdgeInsets.only(right: 7),
-  //           decoration: BoxDecoration(
-  //             border: selectedIndex == index
-  //                 ? Border.all(color: Colors.white, width: 3)
-  //                 : Border.all(),
-  //             borderRadius: BorderRadius.circular(5),
-  //             color: c[index],
-  //           ),
-  //         ),
-  //       );
-  //     }),
-  //   );
-  // }
+  void delL() async {
+    setState(() {});
+
+    fireStore_helper.setUID(widget.current);
+
+    _lab.labelName = " ";
+    _lab.LabelColor = widget.lcolor;
+    _lab.labId = widget.lid;
+
+    fireStore_helper.updatelabels(labels(
+        labelName: _lab.labelName,
+        LabelColor: _lab.LabelColor,
+        labId: _lab.labId));
+
+
+   
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => files(
+                  Currentusername: widget.current,
+                )));
+  }
 }
