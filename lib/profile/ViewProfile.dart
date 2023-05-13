@@ -1,10 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/Models/users.dart';
 import 'package:flutter_application_1/general/LoginPage.dart';
 import 'package:flutter_application_1/navigationBar.dart';
@@ -13,8 +15,10 @@ import 'package:flutter_application_1/profile/loginHistory.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:get/route_manager.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 // import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ViewProfile extends StatefulWidget {
   final String who;
@@ -448,6 +452,7 @@ class _ViewProfileState extends State<ViewProfile> {
                                         backgroundColor:
                                             Color.fromARGB(255, 16, 15, 15),
                                       ),
+
                                       // decoration: BoxDecoration(
                                       //   borderRadius: BorderRadius.circular(25),
                                       //   color: Colors.white,
@@ -495,7 +500,7 @@ class _ViewProfileState extends State<ViewProfile> {
                               actions: [
                                 ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF4E5053),
+                                      backgroundColor: Color(0xFF8A70BE),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(12),
 
@@ -505,35 +510,33 @@ class _ViewProfileState extends State<ViewProfile> {
 
                                     //share code here
                                     onPressed: () {
-                                      data =
-                                          "Scan QR code to add me or use: \n Username: \n" +
-                                              username1 +
-                                              "\n email: \n" +
-                                              email1;
-                                      share(context);
+                                      createQrPicture();
                                     },
-                                    child: Container(
-                                      width: 150,
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 20),
-                                            child: Icon(
-                                              Icons.ios_share_outlined,
-                                              color: Color.fromARGB(
-                                                  255, 248, 247, 247),
-                                              size: 25,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 0),
+                                      child: Container(
+                                        width: 150,
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20),
+                                              child: Icon(
+                                                Icons.ios_share_outlined,
+                                                color: Color.fromARGB(
+                                                    255, 248, 247, 247),
+                                                size: 25,
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 6,
-                                          ),
-                                          Text('Share',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20)),
-                                        ],
+                                            SizedBox(
+                                              width: 6,
+                                            ),
+                                            Text('Share',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20)),
+                                          ],
+                                        ),
                                       ),
                                     )),
                               ],
@@ -579,4 +582,49 @@ class _ViewProfileState extends State<ViewProfile> {
       ]),
     );
   }
+
+  createQrPicture() async {
+    String qr = username1;
+    final qrValidationResult = QrValidator.validate(
+      data: qr,
+      version: QrVersions.auto,
+      errorCorrectionLevel: QrErrorCorrectLevel.L,
+    );
+    qrValidationResult.status == QrValidationStatus.valid;
+    QrCode qrCode = await (qrValidationResult.qrCode!);
+    final painter = QrPainter.withQr(
+      qr: qrCode,
+      color: const Color(0xFF8A70BE),
+      gapless: true,
+      embeddedImageStyle: null,
+      embeddedImage: null,
+    );
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    final ts = DateTime.now().millisecondsSinceEpoch.toString();
+    String path = '$tempPath/$ts.png';
+    final picData =
+        await painter.toImageData(2048, format: ui.ImageByteFormat.png);
+    await writeToFile(picData!, path);
+  }
+
+  Future<void> writeToFile(ByteData data, String path) async {
+    final buffer = data.buffer;
+    await File(path).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+
+    await Share.shareFiles([path],
+        mimeTypes: ["image/png"],
+        subject: 'My QR code',
+        text: 'Scan QR code to add me or use: \n Username: \n $username1');
+  }
+  // child: BarcodeWidget(
+  //                                     data: username1,
+  //                                     barcode: Barcode.qrCode(),
+  //                                     color: Color(0xFF8A70BE),
+  //                                     height: 250,
+  //                                     width: 250,
+  //                                     backgroundColor:
+  //                                         Color.fromARGB(255, 16, 15, 15),
+  //                                   ),
 }

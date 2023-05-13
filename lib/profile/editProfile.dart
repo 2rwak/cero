@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Models/users.dart';
-import 'package:flutter_application_1/navigationBar.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:flutter_application_1/profile/ViewProfile.dart';
 

@@ -61,8 +61,14 @@ dependencies:
   # qr_flutter: ^4.0.0
   share_plus: ^6.3.0
   # flutter_barcode_scanner: ^2.0.0
-  barcode_widget: ^2.0.3
-
+  barcode_widget: ^2.0.1
+  syncfusion_flutter_signaturepad: ^20.4.44
+  open_file: ^2.1.1
+  flutter_flexible_toast: ^0.1.4
+  image_picker: ^0.8.6+1
+  flutter_easyloading: ^3.0.5
+  qr_flutter: ^4.0.0
+  
 
 dev_dependencies:
   flutter_test:
@@ -99,6 +105,7 @@ flutter:
     - assets/Icon.png
     - assets/mail.png 
     - assets/profilePic.png
+    - assets/Add.png
     
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

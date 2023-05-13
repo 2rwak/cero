@@ -1,13 +1,10 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/Models/creditCards.dart';
 import 'package:flutter_application_1/Models/labels.dart';
 import 'package:flutter_application_1/Models/passwords.dart';
 import 'package:flutter_application_1/Models/users.dart';
-import 'package:flutter_application_1/safety_box/Files/files.dart';
 import 'package:flutter_application_1/Models/filesModel.dart';
-import 'package:flutter_application_1/Models/creditCards.dart';
+import '../Models/Pic.dart';
 import '../Models/historyModel.dart';
 
 class fireStore_helper {
@@ -204,7 +201,7 @@ class fireStore_helper {
   static Stream<List<historyModel>> readHistory() {
     var historyCollection = FirebaseFirestore.instance
         .collection('users')
-        .doc("reefthun")
+        .doc(currentOne)
         .collection('History');
 
     // for (var queryDocumentSnapshot in historyCollection.docs) {
@@ -253,6 +250,16 @@ class fireStore_helper {
         .doc(currentOne)
         .collection('files');
 
+    final docRef = FileCollection.doc(fid.substring(69, 82)).delete();
+  }
+
+// Arwa 26 / 1
+  static Future deleteFileShared(String fid) async {
+    final FileCollection = FirebaseFirestore.instance
+        .collection('shared_files')
+        .doc(currentOne)
+        .collection('files');
+
     final docRef = FileCollection.doc(fid).delete();
   }
 
@@ -262,7 +269,7 @@ class fireStore_helper {
         .doc(currentOne)
         .collection('files');
 
-    final docRef = filesCollection.doc(update.fileId);
+    final docRef = filesCollection.doc(update.fileId!.substring(69, 82));
 
     final newFile = filesModel(
             fileName: update.fileName,
@@ -311,5 +318,39 @@ class fireStore_helper {
     } catch (e) {
       print('error');
     }
+  }
+
+  static Future uploadPic(Pic p) async {
+    final pCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentOne)
+        .collection('Photos');
+
+    final docRef = pCollection.doc();
+    final pid = docRef.id;
+
+    final newP = Pic(pId: pid, pURL: p.pURL, path: p.path, no: p.no).toJson();
+
+    await docRef.set(newP);
+  }
+
+  static Stream<List<Pic>> readp() {
+    final pColl = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentOne)
+        .collection('Photos')
+        .orderBy("no", descending: true);
+
+    return pColl.snapshots().map((querySnapshot) =>
+        querySnapshot.docs.map((e) => Pic.fromSnapshot(e)).toList());
+  }
+
+  static Future deleteP(String pid) async {
+    final pCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentOne)
+        .collection('Photos');
+
+    final docRef = pCollection.doc(pid).delete();
   }
 }

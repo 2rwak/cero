@@ -7,16 +7,12 @@ import 'package:flutter_application_1/general/localAuth.dart';
 
 import 'package:flutter_application_1/general/LoginPageOTP.dart';
 import 'package:device_info/device_info.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:flutter_application_1/profile/ViewProfile.dart';
 
 import 'package:flutter_application_1/email_alert/Location.dart';
 import 'package:flutter_application_1/email_alert/time.dart';
 import 'package:flutter_application_1/email_alert/device_type.dart';
 import 'package:flutter_application_1/email_alert/mailer.dart';
-import 'package:flutter_application_1/wallet/wallet.dart';
 
 import '../Models/historyModel.dart';
 import '../notification/local_notice_service.dart';
@@ -84,7 +80,50 @@ class _LoginPageState extends State<LoginPage> {
 
     await inserting();
 
-    mail.main(userNameController.text);
+    // mail.main(userNameController.text);
+  }
+
+  loginAlert() async {
+    print("in ALERT 1");
+    var data = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userNameController.text)
+        .collection('alerts');
+    print("in ALERT 2");
+    String title = "New Activities";
+    String msg = "You have multiple inivtations";
+    var list = (await data.get()).docs;
+    int x = ((await data.get()).docs).length;
+
+    if (x == 0) {
+      print("in ALERT 3");
+      title = 'Logged in';
+      msg = 'Welcome Back!';
+    } else {
+      print("in ALERT 4");
+
+      print("in ALERT 5");
+
+      if (x == 1) {
+        print("in ALERT 6");
+        for (var queryDocumentSnapshot in list) {
+          Map<String, dynamic> data2 = queryDocumentSnapshot.data();
+          title = data2['title'];
+          msg = data2['msg'];
+        }
+      }
+    }
+    await LocalNoticeService().addNotification(
+      title,
+      msg,
+      DateTime.now().millisecondsSinceEpoch + 1000,
+      channel: 'testing',
+    );
+
+    var snapshots = await data.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
   }
 
 // ------------------------------------------------------------------
@@ -155,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 360,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
-              color: Color(0xff1b1b1e),
+              color: Color(0xFF1B1B1E),
             ),
             padding: const EdgeInsets.only(
               left: 18,
@@ -186,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 40,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Color(0xff141416),
+                              color: Color(0xFF141416),
                             ),
                             padding: const EdgeInsets.all(4),
                             child: Row(
@@ -199,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
                                     height: double.infinity,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
-                                      color: Color(0xff8a6fbe),
+                                      color: Color.fromARGB(255, 138, 111, 190),
                                     ),
                                     padding: const EdgeInsets.only(
                                       left: 52,
@@ -276,7 +315,7 @@ class _LoginPageState extends State<LoginPage> {
                 Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text("    Username",
                       style: TextStyle(
-                        color: Color(0xfff8fafc),
+                        color: Color.fromRGBO(248, 250, 252, 1),
                         fontSize: 18,
                         fontFamily: "Inter",
                         fontWeight: FontWeight.w500,
@@ -306,7 +345,7 @@ class _LoginPageState extends State<LoginPage> {
                           border: InputBorder.none,
                           hintText: 'Enter your username',
                           hintStyle: TextStyle(
-                              fontSize: 16, color: Color(0xFF616161))),
+                              fontSize: 16, color: Color.fromARGB(255, 97, 97, 97))),
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         color: Colors.white,
@@ -346,14 +385,14 @@ class _LoginPageState extends State<LoginPage> {
                       // if (signIndevice == hasdevice) {
                       if (isAuthenticated) {
                         await signIn();
-                        print("1BEFORE NOTE");
-                        await LocalNoticeService().addNotification(
-                          'Logged in',
-                          'Welcome Back!',
-                          DateTime.now().millisecondsSinceEpoch + 1000,
-                          channel: 'testing',
-                        );
-                        print("1After NOTE");
+                        await loginAlert();
+
+                        // await LocalNoticeService().addNotification(
+                        //   'Logged in',
+                        //   'Welcome Back!',
+                        //   DateTime.now().millisecondsSinceEpoch + 1000,
+                        //   channel: 'testing',
+                        // );
 
                         _autoLogoutService.startNewTimer(context);
                         Navigator.push(

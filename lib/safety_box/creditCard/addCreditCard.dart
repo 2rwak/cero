@@ -21,6 +21,12 @@ class addCreditCard extends StatefulWidget {
 }
 
 class _addCreditCardState extends State<addCreditCard> {
+  @override
+  void initState() {
+    fireStore_helper.setUID(widget.current);
+    super.initState();
+  }
+
   TextEditingController _banknameController = TextEditingController();
   TextEditingController _cardnoController = TextEditingController();
   TextEditingController _cvvController = TextEditingController();
@@ -68,7 +74,7 @@ class _addCreditCardState extends State<addCreditCard> {
                   SizedBox(height: 12),
                   Container(
                       width: 450,
-                      height: 600,
+                      height: 520,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
                         color: Color(0xff1b1b1e),
@@ -291,9 +297,10 @@ class _addCreditCardState extends State<addCreditCard> {
               //       const EdgeInsets.symmetric(horizontal: 13, vertical: 1),
               // child:
               SizedBox(
-                width: 68,
-                height: 40,
+                width: 75,
+                height: 55,
                 child: DropdownButtonFormField<int>(
+                    value: _selectedMonth,
                     validator: ((value) {
                       if (value == null) return 'Select \nmonth';
                     }),
@@ -335,7 +342,6 @@ class _addCreditCardState extends State<addCreditCard> {
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Color(0xFF8A70BE)))),
-                    value: _selectedMonth,
                     items: months
                         .map((item) => DropdownMenuItem<int>(
                               value: item,
@@ -358,8 +364,8 @@ class _addCreditCardState extends State<addCreditCard> {
                   horizontal: 8,
                 ),
                 child: SizedBox(
-                  width: 68,
-                  height: 40,
+                  width: 75,
+                  height: 55,
                   child: DropdownButtonFormField<int>(
                       validator: (value) {
                         if (value == null) return "Select \n expiry year";
@@ -401,7 +407,7 @@ class _addCreditCardState extends State<addCreditCard> {
                 ),
                 child: SizedBox(
                   width: 110,
-                  height: 90,
+                  height: 50,
                   child: TextFormField(
                       obscureText: _obscuretext2,
                       keyboardType: TextInputType.number,
@@ -467,7 +473,7 @@ class _addCreditCardState extends State<addCreditCard> {
             ],
           ),
           SizedBox(
-            height: 39,
+            height: 9,
           ),
           Row(
             children: [
@@ -608,13 +614,8 @@ class _addCreditCardState extends State<addCreditCard> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => navigationBar(
-                                                  Currentusername:
-                                                      widget.current,
-                                                )));
+                                    Navigator.pop(context);
+                                    r();
                                   },
                                   child: Text('Yes, cancel',
                                       style: TextStyle(
@@ -728,5 +729,9 @@ class _addCreditCardState extends State<addCreditCard> {
             builder: (_) => creditCard(
                   Currentusername: widget.current,
                 )));
+  }
+
+  void r() {
+    Navigator.pop(context);
   }
 }

@@ -23,16 +23,4 @@ class FirebaseApi {
       return null;
     }
   }
-
-  // Future<List> loadFiles() async {
-  //   List<Map> files = [];
-  //   final ListResult result = await firebaseStorage.ref().listAll();
-  //   final List<Reference> allFiles = result.items;
-  //   await Future.forEach(allFiles, (Reference file) async {
-  //     final String fileURL = await file.getDownloadURL();
-  //     files.add({"url": fileURL, "path": file.fullPath});
-  //   });
-  //   print(files);
-  //   return files;
-  // }
 }

@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_application_1/Models/MenuItemss.dart';
-import 'package:flutter_application_1/Models/MenuItemss.dart';
 import 'package:flutter_application_1/Models/labels.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
 import 'package:flutter_application_1/safety_box/Files/files.dart';
-import '../../../navigationBar.dart';
 
 class EditLabel extends StatefulWidget {
   final String current;
@@ -368,9 +363,6 @@ class _EditLabelState extends State<EditLabel> {
         labelName: _lab.labelName,
         LabelColor: _lab.LabelColor,
         labId: _lab.labId));
-
-
-   
 
     Navigator.push(
         context,

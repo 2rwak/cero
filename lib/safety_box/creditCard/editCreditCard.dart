@@ -274,7 +274,7 @@ class _editCreditCardState extends State<editCreditCard> {
                   horizontal: 13,
                 ),
                 child: SizedBox(
-                  width: 70,
+                  width: 75,
                   height: 55,
                   child: DropdownButtonFormField<int>(
                       validator: (_selectedMonth) {

@@ -1,20 +1,10 @@
-import 'dart:collection';
 import 'dart:core';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/general/isUnique.dart';
-
 import 'package:device_info/device_info.dart';
-
 import 'package:flutter_application_1/general/LoginPage.dart';
-import 'package:flutter_application_1/profile/ViewProfile.dart';
-// import 'package:flutter_application_1/general/localAuth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_application_1/navigationBar.dart';
-import 'package:flutter_application_1/wallet/wallet.dart';
-
 import '../email_alert/device_type.dart';
 
 class signUp extends StatefulWidget {
@@ -24,7 +14,7 @@ class signUp extends StatefulWidget {
 }
 
 class _signUpState extends State<signUp> {
-  _signUpState({Key? key});
+  _signUpState();
   final formKey = GlobalKey<FormState>();
 
   String username = '';
@@ -33,6 +23,7 @@ class _signUpState extends State<signUp> {
   String ID = '';
   final valid = true;
   String deviceSetUp = '';
+  bool isNotSet = true;
 // Arwa 22/12
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -41,14 +32,6 @@ class _signUpState extends State<signUp> {
   final isUnique isunique = new isUnique();
   final deviceType device_obj = new deviceType();
   final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
-  // @override
-  // void dispose() {
-  //   userNameController.dispose();
-  //   emailController.dispose();
-  //   phoneNoController.dispose();
-  //   IDController.dispose();
-  //   super.dispose();
-  // }
 
   Future<void> inserting() async {
     final profile = <String, String>{
@@ -484,13 +467,24 @@ class _signUpState extends State<signUp> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 50,
-                        width: 60,
-                        child: Image(
-                          image: AssetImage('assets/face.png'),
-                        ),
-                      ),
+                      Visibility(
+                          visible: isNotSet,
+                          child: Container(
+                            height: 50,
+                            width: 60,
+                            child: Image(
+                              image: AssetImage('assets/face.png'),
+                            ),
+                          ),
+                          replacement: Container(
+                            height: 50,
+                            width: 60,
+                            child: Icon(
+                              Icons.task_alt_outlined,
+                              size: 50,
+                              color: Color(0xFF37D159),
+                            ),
+                          )),
                     ],
                   ),
                   SizedBox(
@@ -501,9 +495,9 @@ class _signUpState extends State<signUp> {
                       height: 27,
                       width: 219,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        color: Color(0xFF4E5053),
-                      ),
+                          borderRadius: BorderRadius.circular(7),
+                          color:
+                              isNotSet ? Color(0xFF8A70BE) : Color(0xFF4E5053)),
                       child: Center(
                         child: InkWell(
                             child: Container(
@@ -511,83 +505,91 @@ class _signUpState extends State<signUp> {
                             child: GestureDetector(
                               /////////////////////////////////////////////////////
                               onTap: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Center(
-                                        child: AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0)),
-                                          backgroundColor: Color(0xFF141416),
-                                          title: Text(
-                                            'Set Up Face Id',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18),
-                                          ),
-                                          content: Text(
-                                              'Do you want to add this device to your account so that you can log in with your face Id?',
+                                if (isNotSet)
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Center(
+                                          child: AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        12.0)),
+                                            backgroundColor: Color(0xFFFFFFFF),
+                                            title: Text(
+                                              'Set Up Face Id',
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16)),
-                                          actions: [
-                                            ElevatedButton(
-                                                style: ButtonStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            content: Text(
+                                                'Do you want to add this device to your account so that you can log in with your face Id?',
+                                                style: TextStyle(fontSize: 16)),
+                                            actions: [
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              ElevatedButton(
+                                                  style: ButtonStyle(
                                                     backgroundColor:
                                                         MaterialStateProperty
-                                                            .all(Color(
-                                                                0xFF4E5053))),
-                                                onPressed: () async {
-                                                  // Navigator.pop(context);
-                                                  var data =
-                                                      await deviceInfoPlugin
-                                                          .iosInfo;
-
-                                                  var deviceName = data.name;
-                                                  var deviceVersion =
-                                                      data.systemVersion;
-                                                  var identifier =
-                                                      data.identifierForVendor;
-                                                  deviceSetUp = deviceName +
-                                                      " " +
-                                                      deviceVersion +
-                                                      " " +
-                                                      identifier;
-                                                  Navigator.pop(
-                                                    context,
-                                                  );
-                                                },
-                                                child: Text('Add',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14))),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            ElevatedButton(
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                    Color(0xFFEC1F1F),
+                                                            .all(
+                                                      Color(0xFFFFFFFF),
+                                                    ),
                                                   ),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(
-                                                    context,
-                                                  );
-                                                },
-                                                child: Text('Cancel',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14)))
-                                          ],
-                                        ),
-                                      );
-                                    });
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                      context,
+                                                    );
+                                                  },
+                                                  child: Text('Cancel',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xFF9B9FA3),
+                                                          fontSize: 16))),
+                                              ElevatedButton(
+                                                  style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(Color(
+                                                                  0xFFFFFFFF))),
+                                                  onPressed: () async {
+                                                    // Navigator.pop(context);
+                                                    var data =
+                                                        await deviceInfoPlugin
+                                                            .iosInfo;
+
+                                                    var deviceName = data.name;
+                                                    var deviceVersion =
+                                                        data.systemVersion;
+                                                    var identifier = data
+                                                        .identifierForVendor;
+                                                    deviceSetUp = deviceName +
+                                                        " " +
+                                                        deviceVersion +
+                                                        " " +
+                                                        identifier;
+
+                                                    Navigator.pop(
+                                                      context,
+                                                    );
+                                                    setState(() {});
+                                                    isNotSet = false;
+                                                  },
+                                                  child: Text('Add',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xFF0A7AFF),
+                                                          fontSize: 16))),
+                                            ],
+                                          ),
+                                        );
+                                      });
                               },
                               child: Text(
-                                'Set Up Face Id',
+                                isNotSet
+                                    ? 'Set Up Face Id'
+                                    : 'You have set your face id',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,

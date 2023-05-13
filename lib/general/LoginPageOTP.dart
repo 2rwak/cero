@@ -3,16 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/navigationBar.dart';
 import 'package:flutter_application_1/general/signUp.dart';
-import 'package:flutter_application_1/general/localAuth.dart';
 import 'package:flutter_application_1/general/logout.dart';
 
 import 'package:flutter_application_1/email_alert/Location.dart';
 import 'package:flutter_application_1/email_alert/time.dart';
 import 'package:flutter_application_1/email_alert/device_type.dart';
 import 'package:flutter_application_1/email_alert/mailer.dart';
-import 'package:flutter_application_1/wallet/wallet.dart';
 
-// import 'package:flutter/fluttertoast/fluttertoast.dart';
 import '../local_notification_serivce.dart';
 import '../notification/local_notice_service.dart';
 import 'LoginPage.dart';
@@ -192,7 +189,7 @@ class _LoginPageOTPState extends State<LoginPageOTP> {
           SizedBox(height: 6),
           Container(
             width: 450,
-            height: 360,
+            height: 390,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               color: Color(0xff1b1b1e),
@@ -383,25 +380,48 @@ class _LoginPageOTPState extends State<LoginPageOTP> {
                               )),
                         ),
                       ),
+                      SizedBox(
+                        height: 14,
+                      ),
                       Visibility(
-                        child: TextFormField(
-                            controller: otpController,
-                            decoration: InputDecoration(
-                              hintText: 'OTP',
-                              hintStyle: TextStyle(
-                                  fontSize: 16, color: Color(0xFF616161)),
-                              prefix: Padding(
-                                padding: EdgeInsets.all(4),
-                                child: Text(''),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
+                          child: TextFormField(
+                              controller: otpController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                counterText: "",
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 1.0, horizontal: 11),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Color(0xff616161),
+                                    width: 1.5,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff616161))),
+                                hintText: 'Enter verification code',
+                                hintStyle: TextStyle(
+                                    fontSize: 16, color: Color(0xFF616161)),
+                                prefix: Padding(
+                                  padding: EdgeInsets.all(4),
+                                  child: Text(''),
+                                ),
                               ),
-                            ),
-                            maxLength: 6,
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            )),
+                              maxLength: 6,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              )),
+                        ),
                         visible: otpVisibility,
                       ),
                       SizedBox(

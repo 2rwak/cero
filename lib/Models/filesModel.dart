@@ -11,7 +11,9 @@ class filesModel {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return filesModel(
-        fileName: snapshot['fileName'], fileId: snapshot['fileId']);
+        fileName: snapshot['fileName'],
+        fileId: snapshot['fileId'],
+        fileColor: snapshot['fileColor']);
   }
 
   Map<String, dynamic> toJson() =>

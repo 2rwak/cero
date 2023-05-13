@@ -8,13 +8,9 @@ import 'package:flutter_application_1/Models/MenuItemss.dart';
 import 'package:flutter_application_1/Models/filesModel.dart';
 import 'package:flutter_application_1/Models/labels.dart';
 import 'package:flutter_application_1/data_sourse/fireStore_helper.dart';
-import 'package:flutter_application_1/safety_box/Files/label/AddLAbel.dart';
-import 'package:flutter_application_1/safety_box/Files/label/labelMenu.dart';
-import 'package:flutter_application_1/safety_box/Files/shared/sharedFiles.dart';
-import 'package:path/path.dart';
-// Arwa 7/1
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
+import 'package:flutter_application_1/safety_box/Files/label/AddLabel.dart';
+import '../fileviewer2.dart';
+import '../safetybox.dart';
 import 'label/EditLabel.dart';
 
 class files extends StatefulWidget {
@@ -40,7 +36,6 @@ class _filesState extends State<files> with TickerProviderStateMixin {
   String fileName = '';
   int? number;
   var selectedLabel;
-  bool lckeck = false;
 
   QueryDocumentSnapshot? files_list;
 
@@ -90,7 +85,8 @@ class _filesState extends State<files> with TickerProviderStateMixin {
       var file = data['fileName'];
     }
 
-    await docRef.set({'fileName': fileN, 'fileId': fid});
+    await docRef
+        .set({'fileName': fileN, 'fileId': url, 'fileColor': 0xFF8A70BE});
   }
 
   ///UPLOAD FILE
@@ -195,9 +191,19 @@ class _filesState extends State<files> with TickerProviderStateMixin {
 
     return Scaffold(
         appBar: AppBar(
-            leading: BackButton(
-              color: Color(0xFF8A70BE),
-            ),
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFF8A70BE),
+                ),
+                onPressed: () async {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => safetybox(
+                                Currentusername: widget.Currentusername,
+                              )));
+                }),
             backgroundColor: Color(0xFF0F0C07),
             centerTitle: false,
             title: Text(
@@ -246,7 +252,7 @@ class _filesState extends State<files> with TickerProviderStateMixin {
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 320),
+                            padding: const EdgeInsets.only(left: 260),
                             child: StreamBuilder<QuerySnapshot>(
                                 stream: FirebaseFirestore.instance
                                     .collection('users')
@@ -277,40 +283,38 @@ class _filesState extends State<files> with TickerProviderStateMixin {
                                           color: labelcolorr,
                                           lID: labelid));
                                     }
-                                    return Expanded(
-                                      child: PopupMenuButton<MenuItemss>(
-                                        onSelected: (item) =>
-                                            onSelected(context, item),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15.0))),
-                                        icon: Icon(
-                                          Icons.style_outlined,
-                                          size: 38,
-                                          color: Color(0xFF8A70BE),
-                                        ),
-                                        color: Color(0xFF0F0C07),
-                                        itemBuilder: (context) => [
-                                          ...labelList.map(buildItem2).toList(),
-                                          // PopupMenuDivider(),
-                                          // ...labelMenu.itemsSecond
-                                          //     .map(buildItem)
-                                          //     .toList(),
-                                        ],
+                                    return PopupMenuButton<MenuItemss>(
+                                      onSelected: (item) =>
+                                          onSelected(context, item),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15.0))),
+                                      icon: Icon(
+                                        Icons.style_outlined,
+                                        size: 38,
+                                        color: Color(0xFF8A70BE),
                                       ),
+                                      color: Color(0xFF0F0C07),
+                                      itemBuilder: (context) => [
+                                        ...labelList.map(buildItem2).toList(),
+                                        // PopupMenuDivider(),
+                                        // ...labelMenu.itemsSecond
+                                        //     .map(buildItem)
+                                        //     .toList(),
+                                      ],
                                     );
                                   }
                                 }),
                             //-----------------Reef 13/01--------------------------
                           ),
-                          // IconButton(
-                          //     onPressed: () => setState(
-                          //         () => isDescending = !isDescending),
-                          //     icon: Icon(
-                          //       Icons.sort_outlined,
-                          //       color: Color(0xFF8A70BE),
-                          //       size: 40,
-                          //     )),
+                          IconButton(
+                              onPressed: () =>
+                                  setState(() => isDescending = !isDescending),
+                              icon: Icon(
+                                Icons.sort_outlined,
+                                color: Color(0xFF8A70BE),
+                                size: 40,
+                              )),
                         ],
                       ),
                       Center(
@@ -329,271 +333,282 @@ class _filesState extends State<files> with TickerProviderStateMixin {
 
                               return Padding(
                                 padding: const EdgeInsets.only(top: 10),
-                                child: Container(
-                                    width: 100,
-                                    height: 65,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      color: Color(0xff1b1b1e),
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        left: 12, right: 1, top: 1, bottom: 1),
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 1, left: 8),
-                                          child: Icon(
-                                            Icons.insert_drive_file_outlined,
-                                            color:
-                                                Color(files_list["fileColor"]),
-                                            size: 30,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => fileviewer2(
+                                                  file_name:
+                                                      files_list!["fileName"],
+                                                  url_user:
+                                                      files_list!["fileId"],
+                                                )));
+                                  },
+                                  child: Container(
+                                      width: 100,
+                                      height: 65,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: Color(0xff1b1b1e),
+                                      ),
+                                      padding: const EdgeInsets.only(
+                                          left: 12,
+                                          right: 1,
+                                          top: 1,
+                                          bottom: 1),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 1, left: 8),
+                                            child: Icon(
+                                              Icons.insert_drive_file_outlined,
+                                              color: Color(
+                                                  files_list["fileColor"]),
+                                              size: 30,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            files_list["fileName"],
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
+                                          SizedBox(
+                                            width: 10,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 3,
-                                        ),
-                                        // IconButton(
-                                        //   icon: Icon(
-                                        //     Icons.sell_outlined,
-                                        //     color: Color(0xFF8A70BE),
-                                        //     size: 30,
-                                        //   ),
-                                        //   onPressed: () {
+                                          Expanded(
+                                            child: Text(
+                                              files_list["fileName"],
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 3,
+                                          ),
+                                          // IconButton(
+                                          //   icon: Icon(
+                                          //     Icons.sell_outlined,
+                                          //     color: Color(0xFF8A70BE),
+                                          //     size: 30,
+                                          //   ),
+                                          //   onPressed: () {
 
-                                        //   },
-                                        // ),
-                                        StreamBuilder<QuerySnapshot>(
-                                          stream: FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(widget.Currentusername)
-                                              .collection('Labels')
-                                              .snapshots(),
-                                          builder: (context, snapshot) {
-                                            var lc;
-                                            if (!snapshot.hasData) {
-                                              return Text("Loading...");
-                                            } else {
-                                              List<DropdownMenuItem> labels =
-                                                  [];
-                                              // checking();
+                                          //   },
+                                          // ),
+                                          StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(widget.Currentusername)
+                                                .collection('Labels')
+                                                .snapshots(),
+                                            builder: (context, snapshot) {
+                                              var lc;
+                                              if (!snapshot.hasData) {
+                                                return Text("Loading...");
+                                              } else {
+                                                List<DropdownMenuItem> labels =
+                                                    [];
 
-                                              for (int i = 0;
-                                                  i <
-                                                      snapshot
-                                                          .data!.docs.length;
-                                                  i++) {
-                                                DocumentSnapshot snap =
-                                                    snapshot.data!.docs[i];
-                                                var ln = snap['labelName'];
-                                                lc = snap['labelColor'];
-                                                if (!snap['labelName']
-                                                    .toString()
-                                                    .startsWith(" ")) {
-                                                  // if (files_list[
-                                                  //         "fileColor"] !=
-                                                  //     0xFF8A70BE) {
-                                                  labels.add(DropdownMenuItem(
-                                                    value: 0xFF8A70BE,
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          "unassign file",
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xFF8A70BE),
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
+                                                for (int i = 0;
+                                                    i <
+                                                        snapshot
+                                                            .data!.docs.length;
+                                                    i++) {
+                                                  DocumentSnapshot snap =
+                                                      snapshot.data!.docs[i];
+                                                  var ln = snap['labelName'];
+                                                  lc = snap['labelColor'];
+                                                  if (!snap['labelName']
+                                                      .toString()
+                                                      .startsWith(" ")) {
+                                                    if (files_list[
+                                                                "fileColor"] !=
+                                                            0xFF8A70BE &&
+                                                        i == 0) {
+                                                      labels
+                                                          .add(DropdownMenuItem(
+                                                        value: 0xFF8A70BE,
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              "Unassign",
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xFF8A70BE),
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ));
-                                                  // }
-                                                  labels.add(DropdownMenuItem(
-                                                    value: snap['labelColor']
-                                                        as int,
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.circle,
-                                                          color: Color(lc),
-                                                          size: 20,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 3,
-                                                        ),
-                                                        Expanded(
-                                                          child: Text(
+                                                      ));
+                                                    }
+                                                    labels.add(DropdownMenuItem(
+                                                      value: snap['labelColor']
+                                                          as int,
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.circle,
+                                                            color: Color(lc),
+                                                            size: 20,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 3,
+                                                          ),
+                                                          Text(
                                                             ln,
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize: 16),
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ));
+                                                        ],
+                                                      ),
+                                                    ));
+                                                  }
                                                 }
-                                              }
-                                              return SizedBox(
-                                                height: 50,
-                                                width: 90,
-                                                child:
-                                                    DropdownButtonHideUnderline(
-                                                  child: DropdownButton(
-                                                    menuMaxHeight: 250,
-                                                    dropdownColor:
-                                                        Color(0xFF141416),
-                                                    isExpanded: true,
-                                                    iconSize: 28,
-                                                    value: selectedLabel,
-                                                    icon: Icon(
-                                                      Icons.sell_outlined,
-                                                      color: Color(0xFF8A70BE),
-                                                      size: 30,
-                                                    ),
-                                                    items: labels,
-                                                    onChanged: (chosenlabel) {
-                                                      setState(() {
-                                                        selectedLabel =
-                                                            chosenlabel;
+                                                return SizedBox(
+                                                  height: 50,
+                                                  width: 90,
+                                                  child:
+                                                      DropdownButtonHideUnderline(
+                                                    child: DropdownButton(
+                                                      menuMaxHeight: 250,
+                                                      dropdownColor:
+                                                          Color(0xFF141416),
+                                                      isExpanded: true,
+                                                      iconSize: 28,
+                                                      value: selectedLabel,
+                                                      icon: Icon(
+                                                        Icons.sell_outlined,
+                                                        color:
+                                                            Color(0xFF8A70BE),
+                                                        size: 30,
+                                                      ),
+                                                      items: labels,
+                                                      onChanged: (chosenlabel) {
+                                                        setState(() {
+                                                          // selectedLabel =
+                                                          //     chosenlabel;
 
-                                                        fireStore_helper.setUID(
-                                                            widget
-                                                                .Currentusername);
-                                                        fireStore_helper
-                                                            .updateFileColor(filesModel(
-                                                                fileName:
-                                                                    files_list[
-                                                                        "fileName"],
-                                                                fileId:
-                                                                    files_list[
-                                                                        "fileId"],
-                                                                fileColor:
-                                                                    chosenlabel));
-                                                      });
-                                                    },
+                                                          fireStore_helper
+                                                              .setUID(widget
+                                                                  .Currentusername);
+                                                          fireStore_helper.updateFileColor(filesModel(
+                                                              fileName:
+                                                                  files_list[
+                                                                      "fileName"],
+                                                              fileId:
+                                                                  files_list[
+                                                                      "fileId"],
+                                                              fileColor:
+                                                                  chosenlabel));
+                                                        });
+                                                      },
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                        IconButton(
-                                            icon: Icon(
-                                              Icons.delete_outlined,
-                                              color: Color(0xFFEC1F1F),
-                                              size: 32,
-                                            ),
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Center(
-                                                      child: AlertDialog(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12.0)),
-                                                        backgroundColor:
-                                                            Color(0xFF141416),
-                                                        title: Text(
-                                                          'Delete',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 18),
-                                                        ),
-                                                        content: Text(
-                                                            'Are you sure you want to delete this file ? ',
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          IconButton(
+                                              icon: Icon(
+                                                Icons.delete_outlined,
+                                                color: Color(0xFFEC1F1F),
+                                                size: 32,
+                                              ),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Center(
+                                                        child: AlertDialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.0)),
+                                                          backgroundColor:
+                                                              Color(0xFF141416),
+                                                          title: Text(
+                                                            'Delete',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 16)),
-                                                        actions: [
-                                                          ElevatedButton(
-                                                              style: ButtonStyle(
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty.all(
-                                                                          Color(
-                                                                              0xFF4E5053))),
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'Cancel',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          14))),
-                                                          SizedBox(
-                                                            width: 10,
+                                                                fontSize: 18),
                                                           ),
-                                                          ElevatedButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                backgroundColor:
-                                                                    MaterialStateProperty
-                                                                        .all(
-                                                                  Color(
-                                                                      0xFFEC1F1F),
+                                                          content: Text(
+                                                              'Are you sure you want to delete this file ? ',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      16)),
+                                                          actions: [
+                                                            ElevatedButton(
+                                                                style: ButtonStyle(
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(Color(
+                                                                            0xFF4E5053))),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Cancel',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14))),
+                                                            SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            ElevatedButton(
+                                                                style:
+                                                                    ButtonStyle(
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                    Color(
+                                                                        0xFFEC1F1F),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              onPressed: () {
-                                                                fireStore_helper
-                                                                    .setUID(widget
-                                                                        .Currentusername);
-                                                                fireStore_helper
-                                                                    .deleteFile(
-                                                                        files_list[
-                                                                            "fileId"]);
+                                                                onPressed: () {
+                                                                  fireStore_helper
+                                                                      .setUID(widget
+                                                                          .Currentusername);
+                                                                  fireStore_helper
+                                                                      .deleteFile(
+                                                                          files_list[
+                                                                              "fileId"]);
 
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'Delete',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          14)))
-                                                        ],
-                                                      ),
-                                                    );
-                                                  });
-                                            })
-                                      ],
-                                    )),
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Delete',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14)))
+                                                          ],
+                                                        ),
+                                                      );
+                                                    });
+                                              })
+                                        ],
+                                      )),
+                                ),
                               );
                             }),
                       ),
                     ],
                   ),
-                  // sharedFiles()
+
                   //Navigator.push(
                   //context,
                   //MaterialPageRoute(
@@ -624,7 +639,11 @@ class _filesState extends State<files> with TickerProviderStateMixin {
       Color(0xFFFE965C),
       Color(0xFFFFF066),
       Color(0xFF4BF15C),
-      Color(0xFF3E67CF)
+      Color(0xFF3E67CF),
+      Color(0xFF8700F1),
+      Color(0xFFFFFFFF),
+      Color(0xFF898989),
+      Color(0xFF69E4EC)
     ];
     QuerySnapshot<Map<String, dynamic>> labelsColl = await FirebaseFirestore
         .instance
@@ -643,20 +662,5 @@ class _filesState extends State<files> with TickerProviderStateMixin {
     }
   }
 
-//24/01
-  // checking() async {
-  //   final labelsColl = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(widget.Currentusername)
-  //       .collection('Labels');
-
-  //   var i2 = labelsColl.snapshots().map((querySnapshot) =>
-  //       querySnapshot.docs.map((e) => filesModel.fromSnapshot(e)).toList());
-  //   var len = i2.length as int;
-  //   for (int i = 0; i < len; i++) {}
-  //   // if ()
-  //   //   lckeck = true;
-  //   // else
-  //   //   lckeck = false;
-  // }
+  checking() {}
 }

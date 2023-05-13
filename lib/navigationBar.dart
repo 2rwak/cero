@@ -81,7 +81,10 @@ class _navigationBarState extends State<navigationBar> {
             case 1:
               return CupertinoTabView(builder: (context) {
                 return CupertinoPageScaffold(
-                  child: Container(child: safetybox()),
+                  child: Container(
+                      child: safetybox(
+                    Currentusername: widget.Currentusername,
+                  )),
                 );
               });
             case 2:
